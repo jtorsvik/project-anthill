@@ -15,4 +15,4 @@ This project aims to:
 
 Whether you're exploring cloud analytics, learning Terraform, or building your own data platform, this project is a hands-on example of how to bring it all together.
 
-The project will also explore the implementation of CI/CD pipelines with GitHub Actions :arrows_clockwise: and Python Package management with UV :crown:.
+The project will also explore the implementation of CI/CD pipelines with GitHub Actions :sparkler: and Python Package management with UV :crown:.
