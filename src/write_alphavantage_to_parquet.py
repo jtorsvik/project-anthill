@@ -7,6 +7,7 @@ the Alpha Vantage API and saves it as a Parquet file.
 import pandas as pd
 import requests, json
 
+print('Ingesting data from Alpha Vantage API')
 # Fetch data from Alpha Vantage API
 url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo'
 r = requests.get(url)
@@ -26,3 +27,5 @@ print(f'Writing to {save_path}')
 
 # Write the DataFrame to a Parquet file
 ibm.to_parquet(save_path, index=True)
+
+print('Data ingestion complete!')
