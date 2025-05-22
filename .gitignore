@@ -48,3 +48,6 @@ pip-delete-this-directory.txt
 .uv/
 uv.cache/
 uv.lock
+
+# Local Storage and database
+data/
