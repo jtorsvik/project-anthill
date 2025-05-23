@@ -17,11 +17,11 @@ data = r.json()
 ibm = pd.DataFrame(data['Time Series (5min)']).T
 
 # Get the current date from the intraday data
-current_date = pd.to_datetime('today').strftime('%Y_%m_%d')
+ingest_date = pd.to_datetime(data['Meta Data']['3. Last Refreshed']).strftime('%Y_%m_%d')
 
 # Create a directory path to save the Parquet file
 sink_dir_path = "~/git_repos/project-anthill/data/"
-filename = f'ibm_{current_date}.parquet'
+filename = f'ibm_{ingest_date}.parquet'
 save_path = sink_dir_path + filename
 print(f'Writing to {save_path}')
 
