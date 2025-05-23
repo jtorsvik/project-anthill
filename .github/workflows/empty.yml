@@ -3,3 +3,11 @@ name:
 
 on:
   workflow_dispatch
+
+
+jobs:
+  echo-empty:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo empty
+        run: echo "This is an empty workflow"
