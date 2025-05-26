@@ -44,3 +44,19 @@ class PolygonAPI():
                 else:
                     raise  # re-raise other HTTP errors
         return aggs
+    
+        # Function to calculate the last working day
+    def last_working_day():
+        today = datetime.now()
+        if today.weekday() == 0:
+            # If today is Monday, subtract three days to get Friday
+            last_working_day = today - timedelta(days=3)
+        elif today.weekday() <= 4:
+            last_working_day = today - timedelta(days=1)
+        # If today is Saturday, subtract one day to get Friday
+        elif today.weekday() == 5:
+            last_working_day = today - timedelta(days=1)
+        elif today.weekday() == 6:
+            last_working_day = today - timedelta(days=2)
+        
+        return last_working_day.strftime('%Y-%m-%d')
