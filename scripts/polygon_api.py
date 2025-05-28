@@ -8,7 +8,14 @@ class PolygonAPI():
         self.api_key = api_key
         self.client = RESTClient(api_key=self.api_key)
 
-    def fetch_aggs_with_backoff(self, ticker, from_date, to_date, multiplier=1, timespan='minute', limit=50000, sleep=True):
+    def fetch_aggs_with_backoff(self,
+                                ticker,
+                                from_date,
+                                to_date,
+                                multiplier=1,
+                                timespan='minute',
+                                limit=50000,
+                                sleep=True):
         retries = 0
         max_retries = 5
         backoff = 1  # start with 1 second
@@ -46,7 +53,7 @@ class PolygonAPI():
         return aggs
     
         # Function to calculate the last working day
-    def last_working_day():
+    def last_working_day(self):
         today = datetime.now()
         if today.weekday() == 0:
             # If today is Monday, subtract three days to get Friday
