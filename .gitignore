@@ -47,7 +47,6 @@ pip-delete-this-directory.txt
 # uv (Python package manager)
 .uv/
 uv.cache/
-uv.lock
 
 # Local Storage and database
 data/

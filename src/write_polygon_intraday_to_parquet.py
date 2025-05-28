@@ -8,7 +8,6 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
 
     # Import custom PolygonAPI class
-    sys.path.append(os.path.abspath(os.path.join('..', 'scripts')))
     from polygon_api import PolygonAPI
 
     load_dotenv()
@@ -31,6 +30,13 @@ if __name__ == '__main__':
     # Fetch intraday data for each ticker and save to parquet files
     for ticker in tickers:
 
+
+        sink_root_path = f'C:/Users/jmtorsvik/git_repos/project-anthill/data/polygon/intraday/{ticker.lower()}/{ticker.lower()}_intraday_{intra_day.replace('-', '_')}.parquet'
+
+        if os.path.exists(sink_root_path):
+            print(f"File already exists: {sink_root_path}. Skipping...\n")
+            continue # Skip if the file already exists
+
         print(f"Fetching data for: {ticker}, on {intra_day}")
         intra_day_ticker = client.fetch_aggs_with_backoff(
             ticker=ticker, 
@@ -44,7 +50,6 @@ if __name__ == '__main__':
         df = pd.DataFrame(intra_day_ticker).T
 
         print("Saving intraday to parquet file...")
-        sink_root_path = f'C:/Users/jmtorsvik/git_repos/project-anthill/data/polygon/intraday/{ticker.lower()}/{ticker.lower()}_intraday_{intra_day.replace('-', '_')}.parquet'
         df.to_parquet(sink_root_path, index=True)
         print(f"Data for {ticker} written to {sink_root_path}\n")
 

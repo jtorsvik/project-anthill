@@ -17,3 +17,6 @@ dependencies = [
     "statsmodels>=0.14.4",
     "torch>=2.7.0",
 ]
+
+[tool.setuptools]
+packages = ['scripts']

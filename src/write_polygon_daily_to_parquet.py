@@ -7,7 +7,6 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
 
     # Import custom PolygonAPI class
-    sys.path.append(os.path.abspath(os.path.join('..', 'scripts')))
     from polygon_api import PolygonAPI
 
     load_dotenv()
@@ -31,9 +30,9 @@ if __name__ == '__main__':
         sink_root_path = f'C:/Users/jmtorsvik/git_repos/project-anthill/data/polygon/daily/{ticker.lower()}/{ticker.lower()}_daily_{from_date[:4]}.parquet'
         
         # Check if the file already exists
-        if os.path.exists(sink_root_path):
-            # print(f"File already exists: {sink_root_path}. Skipping...\n")
-            continue # Skip if the file already exists
+        # if os.path.exists(sink_root_path):
+        #     print(f"File already exists: {sink_root_path}. Skipping...\n")
+        #     continue # Skip if the file already exists
 
         # Fetch intraday data for the ticker
         print(f"{i+1}/{len(tickers)} - Fetching data for: {ticker}, from {from_date} to {to_date}")
