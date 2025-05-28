@@ -4,18 +4,23 @@ if __name__ == '__main__':
     import pandas as pd
     import os, sys
     from polygon import RESTClient
+    from dotenv import load_dotenv
 
+    # Import custom PolygonAPI class
     sys.path.append(os.path.abspath(os.path.join('..', 'scripts')))
     from polygon_api import PolygonAPI
 
-       # All tickers to fetch data for
+    load_dotenv()
+    api_key = os.getenv('POLYGON_API_KEY')
+
+    # All tickers to fetch data for
     tickers = ['AAPL', 'MSFT', 'GOOGL', 'IBM', 'AMZN', 'NVDA',
             'XOM', 'CVX', 'WMT', 'MMM', 'ARE', 'ALLE', 'JPM',
             'V', 'MA', 'PEP', 'CSCO', 'BA', 'ADBE', 'CAT', 
             'BLK', 'INTC', 'NKE', 'MDLZ']
 
     # Initialize the Polygon API client
-    client = RESTClient(api_key='rxdopHP51cQc3RtUbZrNj7Gy0CkpR2Qn')
+    client = RESTClient(api_key=api_key)
     client = PolygonAPI()
 
     to_date = client.last_working_day()

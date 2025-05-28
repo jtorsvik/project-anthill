@@ -5,10 +5,14 @@ if __name__ == '__main__':
     import pandas as pd
     import os, sys
     from polygon import RESTClient
+    from dotenv import load_dotenv
 
     # Import custom PolygonAPI class
     sys.path.append(os.path.abspath(os.path.join('..', 'scripts')))
     from polygon_api import PolygonAPI
+
+    load_dotenv()
+    api_key = os.getenv('POLYGON_API_KEY')
 
     # All tickers to fetch data for
     tickers = ['AAPL', 'MSFT', 'GOOGL', 'IBM', 'AMZN', 'NVDA',
@@ -17,7 +21,7 @@ if __name__ == '__main__':
             'BLK', 'INTC', 'NKE', 'MDLZ']
 
     # Initialize the PolygonAPI client
-    client = RESTClient(api_key='rxdopHP51cQc3RtUbZrNj7Gy0CkpR2Qn')
+    client = RESTClient(api_key=api_key)
     client = PolygonAPI()
 
     # Get the last working day

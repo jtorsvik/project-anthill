@@ -51,3 +51,4 @@ uv.lock
 
 # Local Storage and database
 data/
+.env
