@@ -3,7 +3,7 @@ if __name__ == '__main__':
 
     # Import necessary libraries
     import pandas as pd
-    import os, sys
+    import os
     from polygon import RESTClient
     from dotenv import load_dotenv
 
@@ -25,10 +25,10 @@ if __name__ == '__main__':
 
     # Get the last working day
     intra_day = client.last_working_day()
-    intra_day = "2025-05-26"
+    # intra_day = "2025-05-28"
 
     # Fetch intraday data for each ticker and save to parquet files
-    for ticker in tickers:
+    for i, ticker in enumerate(tickers):
 
 
         sink_root_path = f'C:/Users/jmtorsvik/git_repos/project-anthill/data/polygon/intraday/{ticker.lower()}/{ticker.lower()}_intraday_{intra_day.replace('-', '_')}.parquet'
@@ -37,7 +37,7 @@ if __name__ == '__main__':
             print(f"File already exists: {sink_root_path}. Skipping...\n")
             continue # Skip if the file already exists
 
-        print(f"Fetching data for: {ticker}, on {intra_day}")
+        print(f"{i+1}/{len(tickers)} Fetching data for: {ticker}, on {intra_day}")
         intra_day_ticker = client.fetch_aggs_with_backoff(
             ticker=ticker, 
             from_date=intra_day, 

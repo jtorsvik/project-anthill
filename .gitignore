@@ -51,3 +51,4 @@ uv.cache/
 # Local Storage and database
 data/
 .env
+debug.ipynb

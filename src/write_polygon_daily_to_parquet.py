@@ -2,7 +2,7 @@ if __name__ == '__main__':
 
     # Import necessary libraries
     import pandas as pd
-    import os, sys
+    import os
     from polygon import RESTClient
     from dotenv import load_dotenv
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
         # The sink path for the write operation
         sink_root_path = f'C:/Users/jmtorsvik/git_repos/project-anthill/data/polygon/daily/{ticker.lower()}/{ticker.lower()}_daily_{from_date[:4]}.parquet'
         
-        # Check if the file already exists
+        # # Check if the file already exists
         # if os.path.exists(sink_root_path):
         #     print(f"File already exists: {sink_root_path}. Skipping...\n")
         #     continue # Skip if the file already exists
@@ -47,9 +47,11 @@ if __name__ == '__main__':
 
         print("Structuring data into a Pandas DataFrame...")
         df = pd.DataFrame(intra_day_ticker).T
-        df.index = pd.to_datetime(df.index, utc=True).strftime('%Y-%m-%d')
+        df.index = pd.to_datetime(df.index, utc=True)
+        df.index.astype('datetime64[ns, UTC]')
+        df.index.name = 'date'
 
-        print("Saving intraday to parquet file...")
+        print("Saving to parquet file...")
         df.to_parquet(sink_root_path, index=True)
         print(f"Data for {ticker} written to {sink_root_path}")
         print("----------------------------")
