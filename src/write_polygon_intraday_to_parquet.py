@@ -4,7 +4,6 @@ if __name__ == '__main__':
     # Import necessary libraries
     import pandas as pd
     import os
-    from polygon import RESTClient
     from dotenv import load_dotenv
 
     # Import custom PolygonAPI class
