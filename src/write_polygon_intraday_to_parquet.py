@@ -9,6 +9,7 @@ if __name__ == '__main__':
 
     # Import custom PolygonAPI class
     from polygon_api import PolygonAPI
+    from os_lib import OSLib
 
     load_dotenv()
     api_key = os.getenv('POLYGON_API_KEY')
@@ -20,18 +21,19 @@ if __name__ == '__main__':
             'BLK', 'INTC', 'NKE', 'MDLZ']
 
     # Initialize the PolygonAPI client
-    client = RESTClient(api_key=api_key)
-    client = PolygonAPI()
+    client = PolygonAPI(api_key=api_key)
 
     # Get the last working day
     intra_day = client.last_working_day()
     # intra_day = "2025-05-28"
 
+    project_root_path = OSLib.get_root_path()
+
     # Fetch intraday data for each ticker and save to parquet files
     for i, ticker in enumerate(tickers):
 
 
-        sink_root_path = f'C:/Users/jmtorsvik/git_repos/project-anthill/data/polygon/intraday/{ticker.lower()}/{ticker.lower()}_intraday_{intra_day.replace('-', '_')}.parquet'
+        sink_root_path = f'{project_root_path}/data/polygon/intraday/{ticker.lower()}/{ticker.lower()}_intraday_{intra_day.replace('-', '_')}.parquet'
 
         if os.path.exists(sink_root_path):
             print(f"File already exists: {sink_root_path}. Skipping...\n")

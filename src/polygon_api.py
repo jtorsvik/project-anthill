@@ -4,7 +4,7 @@ from polygon import RESTClient
 from requests.exceptions import HTTPError
 
 class PolygonAPI():
-    def __init__(self, api_key='rxdopHP51cQc3RtUbZrNj7Gy0CkpR2Qn'):
+    def __init__(self, api_key):
         self.api_key = api_key
         self.client = RESTClient(api_key=self.api_key)
 

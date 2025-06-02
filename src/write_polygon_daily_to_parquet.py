@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
     # Import custom PolygonAPI class
     from polygon_api import PolygonAPI
+    from os_lib import OSLib
 
     load_dotenv()
     api_key = os.getenv('POLYGON_API_KEY')
@@ -19,15 +20,16 @@ if __name__ == '__main__':
             'BLK', 'INTC', 'NKE', 'MDLZ']
 
     # Initialize the Polygon API client
-    client = RESTClient(api_key=api_key)
-    client = PolygonAPI()
+    client = PolygonAPI(api_key=api_key)
 
     to_date = client.last_working_day()
     from_date = f"{to_date[:4]}-01-01"
 
+    project_root_path = OSLib.get_root_path()
+
     for i, ticker in enumerate(tickers):
         # The sink path for the write operation
-        sink_root_path = f'C:/Users/jmtorsvik/git_repos/project-anthill/data/polygon/daily/{ticker.lower()}/{ticker.lower()}_daily_{from_date[:4]}.parquet'
+        sink_root_path = f'{project_root_path}/data/polygon/daily/{ticker.lower()}/{ticker.lower()}_daily_{from_date[:4]}.parquet'
         
         # # Check if the file already exists
         # if os.path.exists(sink_root_path):
