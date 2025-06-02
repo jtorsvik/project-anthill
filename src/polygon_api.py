@@ -44,7 +44,7 @@ class PolygonAPI():
 
         aggs = dict()
 
-        while True:
+        while retries < max_retries:
             try:
                 # Fetch aggregate data using the Polygon client
                 for a in self.client.list_aggs(
@@ -136,7 +136,7 @@ class PolygonAPI():
         max_retries = max_retries
         backoff = 1
 
-        while True:
+        while retries < max_retries:
             try:
                 # Fetch dividends using the Polygon client
                 for d in self.client.list_dividends(
