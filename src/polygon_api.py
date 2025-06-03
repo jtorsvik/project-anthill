@@ -138,20 +138,33 @@ class PolygonAPI():
 
         while retries < max_retries:
             try:
-                # Fetch dividends using the Polygon client
-                for d in self.client.list_dividends(
-                    ticker=ticker,
-                    limit=limit,
-                    sort=sort,
-                    order=order
-                ):
-                    # Store dividend data in a dictionary with ex_dividend_date as the key
-                    dividends[d.ex_dividend_date] = d.__dict__
+                # If the ticker does not have dividends, return None
+                if not self.client.list_dividends(ticker=ticker):
+                    print(f"No dividends found for ticker {ticker}.")
+                    return None
+                else:
+                    # Fetch dividends using the Polygon client
+                    for d in self.client.list_dividends(
+                        ticker=ticker,
+                        limit=limit,
+                        sort=sort,
+                        order=order
+                    ):
+                        dividends_recorded = True
+                        # Store dividend data in a dictionary with ex_dividend_date as the key
+                        dividends[d.ex_dividend_date] = d.__dict__
+                        
+                        # If sleep is True, wait for a short time to avoid hitting rate limits
+                        if sleep:
+                            time.sleep(sleep_time)
                     
-                    # If sleep is True, wait for a short time to avoid hitting rate limits
-                    if sleep:
-                        time.sleep(sleep_time)
-                return dividends  # return the dividends dictionary if successful
+                    # If no dividends were recorded, return None
+                    if 'dividends_recorded' not in locals():
+                            return None
+                    else:
+                        # If dividends were recorded, delete the local variable and return the dividends dictionary
+                        del dividends_recorded
+                        return dividends  # return the dividends dictionary if successful
             # Handle HTTP errors
             except HTTPError as e:
                 if e.response.status_code == 429:
