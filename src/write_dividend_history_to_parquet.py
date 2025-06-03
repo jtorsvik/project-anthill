@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
         print(f"Fetching dividend history for {ticker} ({i+1}/{len(tickers)})...")
         dividends = client.fetch_dividends(ticker=ticker,
-                                            sleep_time=0.5)
+                                            sleep_time=3)
         df = pd.DataFrame(dividends).T
         df.drop(columns=['ticker'], inplace=True)
         df.index = pd.to_datetime(df.index)
