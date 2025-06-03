@@ -37,5 +37,11 @@ if __name__ == '__main__':
         df.drop(columns=['ticker'], inplace=True)
         df.index = pd.to_datetime(df.index)
 
+        # Upsert the DataFrame to existing data if it exists
+        if os.path.exists(sink_path):
+            print(f"File {sink_path} already exists, appending new data for {ticker}.")
+            existing_df = pd.read_parquet(sink_path)
+            df = pd.concat([existing_df, df]).drop_duplicates(keep='last')
+
         df.to_parquet(sink_path, index=True)
         print(f"Wrote dividend history for {ticker}.")
