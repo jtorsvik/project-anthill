@@ -17,7 +17,8 @@ if __name__ == '__main__':
     tickers = ['AAPL', 'MSFT', 'GOOGL', 'IBM', 'AMZN', 'NVDA',
             'XOM', 'CVX', 'WMT', 'MMM', 'ARE', 'ALLE', 'JPM',
             'V', 'MA', 'PEP', 'CSCO', 'BA', 'ADBE', 'CAT', 
-            'BLK', 'INTC', 'NKE', 'MDLZ']
+            'BLK', 'INTC', 'NKE', 'MDLZ',
+            'I:NDX', ]
 
     # Initialize the Polygon API client
     client = PolygonAPI(api_key=api_key)
