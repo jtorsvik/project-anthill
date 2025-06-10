@@ -3,7 +3,6 @@
 *.tfstate.*
 .crash
 .terraform/
-.terraform.lock.hcl
 override.tf
 override.tf.json
 *_override.tf
