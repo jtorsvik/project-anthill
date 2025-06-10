@@ -54,3 +54,4 @@ uv.cache/
 data/
 .env
 debug.ipynb
+terraform_state_backup/
