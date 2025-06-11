@@ -39,7 +39,7 @@ This is the core of the platform for data engineers and data scientists. It enab
 **5. Security, Networks & Monitoring**\
 This foundational layer spans the entire platform, providing identity management, encryption, network isolation, and activity monitoring. It ensures that data is protected at all stages—ingestion, storage, processing, and consumption—while also enabling auditing and operational visibility.
 
-## Terraform Enterprise AWS reference architecture
+## Terraform Enterprise Scale
 The Terraform configuration for Project Anthill is structured to promote modularity, reusability, and environment isolation. The repository is organized as follows:
 
 ```
