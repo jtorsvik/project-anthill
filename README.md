@@ -72,7 +72,7 @@ This structure enables consistent, repeatable deployments across multiple AWS en
 
 ## CI/CD with GitHub Actions
 
-Everything TBD
+Currently, there are no CI/CD pipelines implemented in this repository. However, there are detailed plans to build robust CI/CD workflows using GitHub Actions. These workflows will automate infrastructure provisioning, code deployment, testing, security scanning, and documentation, as outlined in the list below. The goal is to ensure reliable, repeatable, and secure deployments across all environments as the project evolves.
 
 Planned implementations:
 
