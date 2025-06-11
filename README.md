@@ -38,3 +38,33 @@ This is the core of the platform for data engineers and data scientists. It enab
 
 **5. Security, Networks & Monitoring**\
 This foundational layer spans the entire platform, providing identity management, encryption, network isolation, and activity monitoring. It ensures that data is protected at all stages—ingestion, storage, processing, and consumption—while also enabling auditing and operational visibility.
+
+## Terraform Enterprise AWS reference architecture
+The Terraform configuration for Project Anthill is structured to promote modularity, reusability, and environment isolation. The repository is organized as follows:
+
+```
+terraform/
+├── modules/
+│   ├── networking/
+│   │   └── main.tf
+│   ├── data-lake/
+│   │   └── main.tf
+│   ├── compute/
+│   │   └── main.tf
+│   └── monitoring/
+│   │   └── main.tf
+├── environments/
+│   ├── dev/
+│   │   └── main.tf
+│   ├── staging/
+│   │   └── main.tf
+│   └── prod/
+│       └── main.tf
+└── versions.tf
+```
+
+- **modules/**: Contains reusable Terraform modules for core infrastructure components (e.g., networking, data lake, compute resources, monitoring).
+- **environments/**: Each subdirectory (dev, staging, prod) contains environment-specific configurations, allowing for isolated deployments and tailored settings per environment.
+- **versions.tf**: Manages provider and Terraform version constraints.
+
+This structure enables consistent, repeatable deployments across multiple AWS environments, following best practices for Infrastructure as Code.
