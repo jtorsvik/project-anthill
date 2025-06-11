@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     # Get the last working day
     intra_day = client.last_working_day()
-    # intra_day = "2025-05-28"
+    # intra_day = "2025-06-06"
 
     project_root_path = OSLib.get_root_path()
 
