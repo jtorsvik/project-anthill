@@ -40,9 +40,10 @@ This is the core of the platform for data engineers and data scientists. It enab
 This foundational layer spans the entire platform, providing identity management, encryption, network isolation, and activity monitoring. It ensures that data is protected at all stages—ingestion, storage, processing, and consumption—while also enabling auditing and operational visibility.
 
 ## Terraform Enterprise Scale
+
 The Terraform configuration for Project Anthill is structured to promote modularity, reusability, and environment isolation. The repository is organized as follows:
 
-```
+```plaintext
 terraform/
 ├── modules/
 │   ├── networking/
@@ -68,3 +69,22 @@ terraform/
 - **versions.tf**: Manages provider and Terraform version constraints.
 
 This structure enables consistent, repeatable deployments across multiple AWS environments, following best practices for Infrastructure as Code.
+
+## CI/CD with GitHub Actions
+
+Everything TBD
+
+Planned implementations:
+
+- Terraform deployment from Dev -> Test -> Prod (on Pull Request approval only!)
+- Databricks code deployment from Dev -> Test -> Prod
+- Automatic integration testing in Test environment
+- Automatic unit testing in Test environment
+- Linting and static code analysis for Terraform and Python code
+- Automated security scanning of Terraform configurations and dependencies
+- Continuous delivery of Python packages to internal or public registries
+- Automated documentation generation and publishing
+- Notification and alerting on pipeline failures or policy violations
+- Environment-specific configuration validation before deployment
+- Rollback and recovery workflows for failed deployments
+- Scheduled infrastructure drift detection and reporting
