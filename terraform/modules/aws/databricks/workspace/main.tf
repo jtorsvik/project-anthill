@@ -33,11 +33,5 @@ resource "databricks_mws_workspace" "this" {
 
     tags = var.tags
 
-    depends_on = [
-        databricks_mws_credentials.this,
-        databricks_mws_storage_configurations.this,
-        databricks_mws_networks.this,
-    ]
-
     token {}
 }
