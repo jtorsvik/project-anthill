@@ -9,9 +9,17 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.0"
     }
+    databricks = {
+      source = "databricks/databricks"
+      version = "~> 1.0.0"
+    }
   }
 }
 
 provider "aws" {
   region = "eu-west-1"
+}
+
+provider "databricks" {
+  # Config options
 }

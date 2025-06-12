@@ -31,7 +31,7 @@ Polygon.io aggregates data from multiple exchanges and sources, offering compreh
 
 The AWS Data Platform Data architecture and platform development is built on the Data Lake architecture on Databricks.
 
-![alt text](how-to-implement-Data-Lake-on-AWS.jpg)
+![alt text](https://helicaltech.com/wp-content/uploads/2023/10/how-to-implement-Data-Lake-on-AWS.jpg)
 
 **1. Ingestion**\
 This layer is responsible for collecting data from a wide variety of sources—such as APIs, databases, streaming services, and file transfers—and bringing it into the platform. It ensures that data from both real-time and batch sources is reliably and securely ingested for further processing.
@@ -60,7 +60,7 @@ terraform/
 │   │   └── main.tf
 │   ├── data-lake/
 │   │   └── main.tf
-│   ├── compute/
+│   ├── databricks/
 │   │   └── main.tf
 │   └── monitoring/
 │   │   └── main.tf
@@ -79,6 +79,23 @@ terraform/
 - **versions.tf**: Manages provider and Terraform version constraints.
 
 This structure enables consistent, repeatable deployments across multiple AWS environments, following best practices for Infrastructure as Code.
+
+### Databricks Workspace configuration
+
+The Databricks workspace configuration for Project Anthill is designed to align with the Data Lake architecture depicted in the image above. Each workspace is provisioned and managed using Terraform, ensuring consistency and repeatability across environments (dev, staging, prod).
+
+![alt text](https://raw.githubusercontent.com/databricks/terraform-provider-databricks/main/docs/simplest-multiworkspace.png)
+
+Key aspects of the workspace configuration include:
+
+- **Resource Isolation:** Separate Databricks workspaces are created for each environment to ensure isolation of data, compute, and user access. This supports safe development, testing, and production operations.
+- **Networking:** Workspaces are deployed within dedicated VPCs/subnets, with secure connectivity to AWS services and on-premises resources as needed. Private endpoints and security groups are configured to restrict access.
+- **Unity Catalog Integration:** Each workspace is integrated with Unity Catalog for centralized data governance, access control, and metadata management.
+- **Cluster Policies:** Standardized cluster policies are enforced to control resource usage, cost, and security settings for all compute clusters.
+- **Workspace Artifacts:** Notebooks, libraries, and jobs are organized within the workspace according to project structure, with access permissions managed via groups and roles.
+- **Automation:** Workspace provisioning, configuration, and updates are automated through Terraform modules, enabling rapid and consistent deployment.
+
+This setup ensures that the Databricks environment is secure, scalable, and aligned with the overall platform architecture, supporting collaborative analytics and machine learning workflows.
 
 ## CI/CD with GitHub Actions
 

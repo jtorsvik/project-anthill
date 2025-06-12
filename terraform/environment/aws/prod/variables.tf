@@ -4,12 +4,14 @@ variable "env" {
   default     = "prod"
 }
 
-variable "tags" {
-  description = "A map of tags to assign to the resources"
-  type        = map(string)
-  default = {
-    env     = "prod"
-    owner   = "jmtorsvik-admin"
-    project = "project-anthill"
-  }
+variable "owner" {
+  description = "The owner of the resources"
+  type        = string
+  default     = "joakimmt-admin"
+}
+
+variable "project" {
+  description = "The project name for which the resources are being created"
+  type        = string
+  default     = "project-anthill"
 }
