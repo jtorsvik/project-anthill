@@ -17,6 +17,16 @@ Whether you're exploring cloud analytics, learning Terraform, or building your o
 
 The project will also explore the implementation of CI/CD pipelines with GitHub Actions :sparkler: and Python Package management with UV :crown:.
 
+## Data Platform Usecase
+
+The data platform will serve as a comprehensive solution for acquiring, processing, analyzing, and deriving insights from financial market data provided by [Polygon.io](https://polygon.io/). It will automate the ingestion of real-time and historical financial data via open APIs, securely store raw and processed datasets, and enable advanced analytics and machine learning workflows. The platform will support tasks such as time-series analysis, anomaly detection, predictive modeling, and reporting on financial instruments like stocks, options, forex, and cryptocurrencies. By leveraging scalable AWS infrastructure and modular Terraform configurations, the platform will facilitate rapid experimentation, reproducible research, and reliable deployment of analytics solutions for financial data-driven decision making.
+
+### Polygon.io - Who are they?
+
+[Polygon.io](https://polygon.io/) is a leading financial data platform that provides real-time and historical market data APIs for stocks, options, forex, and crypto assets. Their services are widely used by developers, analysts, and financial institutions to access high-quality, low-latency data for trading, analytics, and research purposes.
+
+Polygon.io aggregates data from multiple exchanges and sources, offering comprehensive coverage of U.S. and global markets. Their APIs deliver data such as price quotes, trades, aggregates, reference data, and news, making it easy to build applications for market analysis, algorithmic trading, and machine learning. With robust documentation and scalable infrastructure, Polygon.io enables seamless integration into data pipelines and analytics platforms.
+
 ## AWS Data Platform
 
 The AWS Data Platform Data architecture and platform development is built on the Data Lake architecture on Databricks.
@@ -88,3 +98,17 @@ Planned implementations:
 - Environment-specific configuration validation before deployment
 - Rollback and recovery workflows for failed deployments
 - Scheduled infrastructure drift detection and reporting
+
+## Data Governance
+
+To ensure robust data governance, Project Anthill leverages [Unity Catalog](https://docs.databricks.com/en/data-governance/unity-catalog/index.html) in Databricks. Unity Catalog provides a unified governance solution for all data assets, enabling fine-grained access control, centralized metadata management, and secure data sharing across the platform.
+
+**Key aspects of Unity Catalog usage:**
+
+- **Centralized Access Control:** Unity Catalog allows us to define and enforce data access policies at the catalog, schema, table, and view levels. This ensures that only authorized users and groups can access sensitive datasets, supporting the principle of least privilege.
+- **Data Lineage and Auditing:** All data access and modification events are tracked, providing full visibility into who accessed or changed data. This supports compliance, auditing, and troubleshooting.
+- **Secure Data Sharing:** Unity Catalog enables secure sharing of data assets across Databricks workspaces and with external partners, without the need to copy or move data. This facilitates collaboration while maintaining strict security controls.
+- **Consistent Governance Across Environments:** By integrating Unity Catalog with Terraform-managed infrastructure, we ensure that governance policies are consistently applied across development, staging, and production environments.
+- **Integration with AWS IAM:** Unity Catalog can be integrated with AWS IAM roles and policies, providing seamless authentication and authorization aligned with organizational security standards.
+
+By adopting Unity Catalog, Project Anthill ensures that all ingested, processed, and shared data is governed according to best practices, supporting data privacy, regulatory compliance, and secure analytics workflows.
