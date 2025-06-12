@@ -8,6 +8,7 @@ if __name__ == '__main__':
     # Import custom PolygonAPI class
     from polygon_api import PolygonAPI
     from os_lib import OSLib
+
     # from polygon import RESTClient
 
     load_dotenv()
@@ -25,8 +26,8 @@ if __name__ == '__main__':
     # Initialize the Polygon API client
     client = PolygonAPI(api_key=api_key)
 
-    # to_date = client.last_working_day()
-    to_date = "2022-12-31"
+    to_date = client.last_working_day()
+    # to_date = "2022-12-31"
     from_date = f"{to_date[:4]}-01-01"
 
     project_root_path = OSLib.get_root_path()
