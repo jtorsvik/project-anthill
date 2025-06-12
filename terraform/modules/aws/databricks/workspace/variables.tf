@@ -13,6 +13,35 @@ variable "databricks_account_id" {
   description = "(Required) The Databricks account ID."
 }
 
+variable "role_arn" {
+  type        = string
+  description = "(Required) The AWS IAM role ARN that Databricks will assume for the workspace."
+}
+
+variable "storage_location" {
+  type        = string
+  description = "(Required) The S3 bucket location for the Databricks workspace storage."
+}
+
+variable "network_name" {
+  type        = string
+  description = "(Required) The name of the network for the Databricks workspace."
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "(Required) The VPC ID where the Databricks workspace will be created."
+}
+
+variable "subnet_ids" {
+  type        = list(string)
+  description = "(Required) A list of subnet IDs for the Databricks workspace."
+}
+
+variable "security_group_ids" {
+  type        = list(string)
+  description = "(Required) A list of security group IDs for the Databricks workspace."
+}
 
 variable "workspace_name" {
   type        = string
