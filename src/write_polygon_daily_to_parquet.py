@@ -3,12 +3,12 @@ if __name__ == '__main__':
     # Import necessary libraries
     import pandas as pd
     import os
-    from polygon import RESTClient
     from dotenv import load_dotenv
 
     # Import custom PolygonAPI class
     from polygon_api import PolygonAPI
     from os_lib import OSLib
+    # from polygon import RESTClient
 
     load_dotenv()
     api_key = os.getenv('POLYGON_API_KEY')
@@ -19,12 +19,14 @@ if __name__ == '__main__':
         'XOM', 'CVX', 'WMT', 'MMM', 'ARE', 'ALLE', 'JPM',
         'V', 'MA', 'PEP', 'CSCO', 'BA', 'ADBE', 'CAT', 
         'BLK', 'INTC', 'NKE', 'MDLZ',
-        'I:NDX', 'I:COMP']
+        'I:NDX', 'I:COMP',
+        ]
 
     # Initialize the Polygon API client
     client = PolygonAPI(api_key=api_key)
 
-    to_date = client.last_working_day()
+    # to_date = client.last_working_day()
+    to_date = "2022-12-31"
     from_date = f"{to_date[:4]}-01-01"
 
     project_root_path = OSLib.get_root_path()
