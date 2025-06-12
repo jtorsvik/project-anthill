@@ -13,10 +13,6 @@ variable "databricks_account_id" {
   description = "(Required) The Databricks account ID."
 }
 
-variable "cidr_block" {
-  type        = string
-  description = "(Required) The CIDR block for the Databricks workspace."
-}
 
 variable "workspace_name" {
   type        = string
