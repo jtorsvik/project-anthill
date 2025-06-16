@@ -2,28 +2,21 @@
 # Environment Variables for AWS Resources
 # ----------------------------------------
 
-variable "env" {
-  description = "The environment for which the resources are being created (e.g., dev, staging, prod)"
-  type        = string
-  default     = "dev"
-}
-
-variable "owner" {
-  description = "The owner of the resources"
-  type        = string
-  default     = "joakimmt-admin"
-}
-
-variable "project" {
-  description = "The project name for which the resources are being created"
-  type        = string
-  default     = "project-anthill"
+variable "tags" {
+  description = "Tags to apply to all AWS resources"
+  type        = map(string)
+  default     = {
+    env     = local.env
+    owner   = local.owner
+    project = local.project
+  }
+  
 }
 
 variable "region" {
   description = "The AWS region where the resources will be created"
   type        = string
-  default     = "eu-west-1"
+  default     = local.region
 }
 
 # ----------------------------------------
@@ -39,13 +32,13 @@ variable "region" {
 variable "databricks_workspace_name" {
   description = "The name of the Databricks workspace"
   type        = string
-  default     = "dbrix-project-anthill-dev"
+  default     = "dbrix-project-anthill-${local.env}"
 }
 
 variable "databricks_workspace_region" {
   description = "The AWS region for the Databricks workspace"
   type        = string
-  default     = "eu-west-1"
+  default     = local.region
 }
 
 # ----------------------------------------
@@ -55,7 +48,7 @@ variable "databricks_workspace_region" {
 variable "databricks_cluster_name" {
   description = "The name of the Databricks cluster"
   type        = string
-  default     = "dbrix-cluster-dev"
+  default     = "dbrix-cluster-${local.env}"
 }
 
 variable "databricks_cluster_node_type" {
@@ -96,7 +89,7 @@ variable "storage_location" {
 variable "network_name" {
   description = "The name of the network for the Databricks workspace"
   type        = string
-  default     = "dbrix-network-dev"
+  default     = "dbrix-network-${local.env}"
 }
 
 variable "vpc_id" {
@@ -117,7 +110,7 @@ variable "security_group_ids" {
 variable "workspace_name" {
   description = "The name of the Databricks workspace"
   type        = string
-  default     = "dbrix-workspace-dev"
+  default     = "dbrix-workspace-${local.env}"
 }
 
 variable "client_id" {

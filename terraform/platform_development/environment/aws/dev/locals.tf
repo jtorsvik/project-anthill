@@ -1,7 +1,6 @@
 locals {
-    tags = {
-    env     = var.env
-    owner   = var.owner
-    project = var.project
-    }
+    env     = "dev"
+    owner   = "joakimmt-admin"
+    project = "project-anthill"
+    region  = "eu-west-1"
 }
