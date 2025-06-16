@@ -5,11 +5,11 @@
 module "aws_vpc_public_subnets" {
     source = "../../../modules/aws/network/vpc/"
     # version     = "1.0.0"
-    friendly_name_prefix = "project-anthill-vpc-tf-${local.env}"
+    friendly_name_prefix = "project-anthill-vpc-tf-${var.env}"
     cidr_block           = "10.0.0.0/16"
     enable_dns_support   = false
     enable_dns_hostnames = false
-    tags                 = var.tags
+    tags                 = local.tags
 }
 
 module "aws_public_subnets" {
@@ -17,14 +17,14 @@ module "aws_public_subnets" {
     # version     = "1.0.0"
     vpc_id     = module.aws_vpc_public_subnets.vpc_id
     cidr_block = "10.0.0.0/24"
-    tags       = var.tags
+    tags       = local.tags
 }
 
 module "aws_internet_gateway" {
     source = "../../../modules/aws/network/internet-gateway/"
     # version     = "1.0.0"
     vpc_id = module.aws_vpc_public_subnets.vpc_id
-    tags   = var.tags
+    tags   = local.tags
 }
 
 module "aws_route_table" {
@@ -39,9 +39,19 @@ module "aws_route_table" {
 module "security_group" {
     source = "../../../modules/aws/network/security-group/"
     # version     = "1.0.0"
-    name        = "project-anthill-sg-tf-${local.env}"
+    name        = "project-anthill-sg-tf-${var.env}"
     description = "Security group for project Anthill"
     vpc_id      = module.aws_vpc_public_subnets.vpc_id
+}
+
+#############################################
+# Storage
+#############################################
+
+module "aws_s3_bucket" {
+    source = "../../../modules/aws/storage/s3_bucket/"
+    # version     = "1.0.0"
+    bucket_name = "project-anthill-s3-bucket-tf-${var.env}"
 }
 
 #############################################
@@ -65,5 +75,5 @@ module "security_group" {
 #     subnet_ids               = module.aws_public_subnets.public_subnet_ids
 #     security_group_ids       = var.security_group_ids
 #     region                   = var.databricks_workspace_region
-#     tags                     = var.tags
+#     tags                     = local.tags
 # }
