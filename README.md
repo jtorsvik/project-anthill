@@ -1,5 +1,8 @@
 # Project Anthill :ant:
 
+> **Disclaimer:**  
+> The structure and examples provided in this repository are for demonstration and educational purposes. In a production environment, it is recommended to separate infrastructure code into multiple repositories based on team responsibilities and access requirements. Sensitive resources such as networking and security should be managed by dedicated platform teams, while analytics and application teams should have access only to the resources necessary for their workflows. Always follow your organization's security, compliance, and access control policies when implementing infrastructure as code.
+
 ## Introduction
 
 This is a self-developed project by me (@jtorsvik :monkey_face:) for building a Analytics Platform in AWS with the IaC-tool Terraform :heavy_multiplication_x:.
@@ -79,6 +82,10 @@ terraform/
 - **versions.tf**: Manages provider and Terraform version constraints.
 
 This structure enables consistent, repeatable deployments across multiple AWS environments, following best practices for Infrastructure as Code.
+
+### Disclaimer
+
+In a real life scenario, a terraform developed data platform will consist of multiple repositories for the various access requirements (Team-based Access Control). In real life there would be multiple teams that work on the data platform with different end goals. E.g. Analytics & AI developers only need to build and destroy AI related resources like Databricks workspaces and clusters, S3-Buckets (storage accounts) and other related resources. They should not have access to network & security resources, however. That should only be accessed by the Data Platform Developers.
 
 ### Databricks Workspace configuration
 
