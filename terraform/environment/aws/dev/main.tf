@@ -42,7 +42,6 @@ module "security_group" {
     name        = "project-anthill-sg-tf-${var.env}"
     description = "Security group for project Anthill"
     vpc_id      = module.aws_vpc_public_subnets.vpc_id
-  
 }
 
 #############################################
