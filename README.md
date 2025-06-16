@@ -85,7 +85,7 @@ This structure enables consistent, repeatable deployments across multiple AWS en
 
 ### Disclaimer
 
-In a real life scenario, a terraform developed data platform will consist of multiple repositories for the various access requirements (Team-based Access Control). In real life there would be multiple teams that work on the data platform with different end goals. E.g. Analytics & AI developers only need to build and destroy AI related resources like Databricks workspaces and clusters, S3-Buckets (storage accounts) and other related resources. They should not have access to network & security resources, however. That should only be accessed by the Data Platform Developers.
+In a real life scenario, a terraform developed data platform will consist of multiple repositories for the various access requirements (Team-based Access Control). In real life there would be multiple teams that work on the data platform with different end goals. E.g. Analytics & AI developers only need to build and destroy AI related resources like Databricks workspaces and clusters, S3-Buckets (storage accounts) and other related resources. They should not have access to network & security resources, however. That should only be accessed by the Data Platform Developers. We try to exemplify this by creating separate terraform workspaces within the terraform directory, where "platform_development" represents Data Platform Development workspaces, and "innovation_development" represent the workspace development that data engineers, data scientists and data analytics can perform in the dataplatform on Terraform. 
 
 ### Databricks Workspace configuration
 
