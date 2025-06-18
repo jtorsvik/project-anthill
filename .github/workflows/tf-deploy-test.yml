@@ -45,13 +45,13 @@ jobs:
 
 
             - name: Initialize Terraform
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test init
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ init
 
             - name: Validate Terraform configuration
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test validate
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ validate
             
             - name: Plan Terraform changes
-              run: terraform -chdir=/terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test plan -out=tfplan
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ plan -out=tfplan
 
             - name: Apply Terraform changes
               run: terraform apply -auto-approve
