@@ -1,0 +1,52 @@
+name: Promote Terraform changes to testing environment
+
+on:
+    workflow_dispatch:
+        inputs:
+            cloud_provider:
+                description: 'Cloud provider for the environment'
+                required: true
+                type: choice
+                options:
+                    - aws
+                    - azure
+                    - gcp
+            workspace:
+                description: 'Terraform workspace to use'
+                required: true
+                type: choice
+                options:
+                    - innovation_development
+                    - platform_development
+            
+jobs:
+    terraform:
+        runs-on: ubuntu-latest
+        environment: test
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.6.0
+
+            - name: Initialize Terraform
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ init
+
+            - name: Validate Terraform configuration
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ validate
+            
+            - name: Plan Terraform changes
+              run: terraform -chdir=/terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ plan -out=tfplan
+
+            - name: Apply Terraform changes
+              run: terraform apply -auto-approve
+              env:
+                TF_VAR_environment: test
+
+            - name: Output environment
+              run: echo "Successfully deployed to test environment"
+
+              
