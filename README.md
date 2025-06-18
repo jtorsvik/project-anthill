@@ -111,7 +111,7 @@ Currently, there are no CI/CD pipelines implemented in this repository. However,
 Planned implementations:
 
 - [DONE] Terraform deployment from Dev -> Test
-- Terraform deployment from Test -> Prod
+- [DONE] Terraform deployment from Test -> Prod
 - Databricks code deployment from Dev -> Test -> Prod
 - Automatic integration testing in Test environment
 - Automatic unit testing in Test environment

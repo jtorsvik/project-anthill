@@ -111,7 +111,7 @@ jobs:
               run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/prod/ validate
 
             - name: Plan Terraform changes
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/prod/ plan -out=tfplan
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/prod/ plan
 
             - name: Commit & merge changes to main
               run: |
