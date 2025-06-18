@@ -31,6 +31,13 @@ jobs:
               uses: hashicorp/setup-terraform@v3
               with:
                 terraform_version: 1.6.0
+            
+            - name: Configure AWS credentials
+              run: |
+                set -a
+                source terraform/environment/${{ github.event.inputs.cloud_provider }}/test/.env
+                set +a
+
 
             - name: Initialize Terraform
               run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ init
