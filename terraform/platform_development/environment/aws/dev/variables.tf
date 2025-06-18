@@ -8,17 +8,17 @@
 # # Variables for the Databricks Workspace configuration
 # # ----------------------------------------
 
-# variable "databricks_workspace_name" {
-#   description = "The name of the Databricks workspace"
-#   type        = string
-#   default     = "dbrix-project-anthill-dev"
-# }
+variable "databricks_workspace_name" {
+  description = "The name of the Databricks workspace"
+  type        = string
+  default     = "dbrix-project-anthill-dev"
+}
 
-# variable "databricks_workspace_region" {
-#   description = "The AWS region for the Databricks workspace"
-#   type        = string
-#   default     = "eu-west-1"
-# }
+variable "databricks_workspace_region" {
+  description = "The AWS region for the Databricks workspace"
+  type        = string
+  default     = "eu-west-1"
+}
 
 # # ----------------------------------------
 # # Variables for the Databricks Cluster configuration
