@@ -53,7 +53,7 @@ jobs:
               run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/dev/ validate
             
             - name: Plan Terraform changes
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/dev/ plan -out=tfplan
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/dev/ plan
 
             - name: Output environment
               run: echo "Successfull terraform plan in dev environment"
