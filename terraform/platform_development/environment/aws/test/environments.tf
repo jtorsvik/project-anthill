@@ -25,9 +25,3 @@ variable "region" {
   type        = string
   default     = "eu-west-1"
 }
-
-variable "test" {
-  description = "This is just a test"
-  type        = string
-  default     = "test"
-}

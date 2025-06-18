@@ -1,4 +1,4 @@
-name: Promote Terraform changes to testing environment
+name: Promote Terraform changes to production environment
 
 on:
     workflow_dispatch:
@@ -24,7 +24,7 @@ permissions:
     pull-requests: write
             
 jobs:
-    terraform-plan-dev:
+    terraform-plan-test:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
@@ -35,6 +35,7 @@ jobs:
               with:
                 terraform_version: 1.7.0
             
+
             - name: Configure AWS CLI
               if: ${{ github.event.inputs.cloud_provider == 'aws' }}
               run: |
@@ -47,19 +48,19 @@ jobs:
                   AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
             - name: Initialize Terraform
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/dev/ init
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ init
 
             - name: Validate Terraform configuration
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/dev/ validate
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ validate
             
             - name: Plan Terraform changes
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/dev/ plan
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ plan
 
             - name: Output environment
-              run: echo "Successfull terraform plan in dev environment"
+              run: echo "Successfull terraform plan in test environment"
     deploy-to-test:
         runs-on: ubuntu-latest
-        needs: terraform-plan-dev
+        needs: terraform-plan-test
         steps:
             - name: Checkout repository
               uses: actions/checkout@v3
@@ -71,21 +72,21 @@ jobs:
             
             - name: Create deployment branch
               run: |
-                git switch -c ${{ github.event.inputs.workspace }}-test-deployment
+                git switch -c ${{ github.event.inputs.workspace }}-prod-deployment
                 echo "Created branch for deployment to test environment"
 
-            - name: Copy dev to test
+            - name: Copy test to prod
               run: |
 
 
-                  find terraform/${{ github.event.inputs.workspace }}/environment/${{ github.event.inputs.cloud_provider }}/dev \
+                  find terraform/${{ github.event.inputs.workspace }}/environment/${{ github.event.inputs.cloud_provider }}/test \
                     -maxdepth 1 \
                     -type f \
                     -name "*.tf" \
                     ! -name "environments.tf" \
                     ! -name "backends.tf" \
-                    -exec cp -v {} terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ \;
-                  echo "Copied dev to test environment"
+                    -exec cp -v {} terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/prod/ \;
+                  echo "Copied test to prod environment"
             
             - name: Set up Terraform
               uses: hashicorp/setup-terraform@v3
@@ -104,22 +105,22 @@ jobs:
                   AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
             
             - name: Initialize Terraform
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ init
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/prod/ init
 
             - name: Validate Terraform configuration
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ validate
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/prod/ validate
 
             - name: Plan Terraform changes
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/test/ plan -out=tfplan
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/prod/ plan -out=tfplan
 
             - name: Commit & merge changes to main
               run: |
                   git add .
-                  git commit -m "Deploying changes to test environment for ${{ github.event.inputs.workspace }} on ${{ github.event.inputs.cloud_provider }}"
-                  git push origin ${{ github.event.inputs.workspace }}-test-deployment
+                  git commit -m "Deploying changes to production environment for ${{ github.event.inputs.workspace }} on ${{ github.event.inputs.cloud_provider }}"
+                  git push origin ${{ github.event.inputs.workspace }}-prod-deployment
                   git switch main
-                  git merge --no-ff ${{ github.event.inputs.workspace }}-test-deployment
+                  git merge --no-ff ${{ github.event.inputs.workspace }}-prod-deployment
 
             ### Uncomment the following lines to apply the Terraform changes automatically
             # - name: Apply Terraform changes
-            #   run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/test/ apply -auto-approve
+            #   run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/prod/ apply -auto-approve
