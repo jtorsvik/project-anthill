@@ -43,13 +43,13 @@ jobs:
                 AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
             - name: Initialize Terraform
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ init
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/dev/ init
 
             - name: Validate Terraform configuration
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ validate
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/dev/ validate
             
             - name: Plan Terraform changes
-              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ plan -out=tfplan
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/dev/ plan -out=tfplan
 
             - name: Output environment
               run: echo "Successfull terraform plan in dev environment"
