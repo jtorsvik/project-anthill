@@ -67,6 +67,7 @@ jobs:
                     -type f \
                     -name "*.tf" \
                     ! -name "locals.tf" \
+                    ! -name "backends.tf" \
                     -exec cp -v {} terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ \;
                   echo "Copied dev to test environment"
             
