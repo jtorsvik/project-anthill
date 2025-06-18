@@ -18,6 +18,10 @@ on:
                 options:
                     - platform_development
                     - innovation_development
+
+permissions:
+    contents: write
+    pull-requests: write
             
 jobs:
     terraform-plan-dev:
@@ -60,8 +64,20 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v3
 
+            - name: Set up Git user
+              run: |
+                git config --global user.name ${{ github.actor }}
+                git config --global user.email ${{ github.actor }}@users.noreply.github.com
+            
+            - name: Create deployment branch
+              run: |
+                git switch -c ${{ github.event.inputs.workspace }}-test-deployment
+                echo "Created branch for deployment to test environment"
+
             - name: Copy dev to test
               run: |
+
+
                   find terraform/platform_development/environment/aws/dev \
                     -maxdepth 1 \
                     -type f \
@@ -91,6 +107,17 @@ jobs:
 
             - name: Validate Terraform configuration
               run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ validate
+
+            - name: Plan Terraform changes
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/test/ plan -out=tfplan
+
+            - name: Commit & merge changes to main
+              run: |
+                  git add .
+                  git commit -m "Deploying changes to test environment for ${{ github.event.inputs.workspace }} on ${{ github.event.inputs.cloud_provider }}"
+                  git push origin ${{ github.event.inputs.workspace }}-test-deployment
+                  git switch main
+                  git merge --no-ff ${{ github.event.inputs.workspace }}-test-deployment
 
             - name: Apply Terraform changes
               run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/test/ apply -auto-approve
