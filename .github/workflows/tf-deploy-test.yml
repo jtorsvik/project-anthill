@@ -62,7 +62,8 @@ jobs:
 
             - name: Copy dev to test
               run: |
-                cp -r -v terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/dev/*.tf terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/test/
+                find terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/dev -maxdepth 1 -type f -name "*.tf" ! -name "locals.tf" -exec
+                cp -r -v {} terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/test/
                 echo "Copied dev to test environment"
             
             - name: Set up Terraform
