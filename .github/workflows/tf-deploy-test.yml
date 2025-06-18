@@ -22,7 +22,6 @@ on:
 jobs:
     terraform:
         runs-on: ubuntu-latest
-        environment: test
         steps:
             - name: Checkout repository
               uses: actions/checkout@v3
@@ -32,11 +31,17 @@ jobs:
               with:
                 terraform_version: 1.6.0
             
-            - name: Configure AWS credentials
+
+            - name: Configure AWS CLI
               run: |
-                set -a
-                source terraform/environment/${{ github.event.inputs.cloud_provider }}/test/.env
-                set +a
+                aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                aws configure set default.region $AWS_DEFAULT_REGION
+              env:
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
 
 
             - name: Initialize Terraform
@@ -50,8 +55,6 @@ jobs:
 
             - name: Apply Terraform changes
               run: terraform apply -auto-approve
-              env:
-                TF_VAR_environment: test
 
             - name: Output environment
               run: echo "Successfully deployed to test environment"
