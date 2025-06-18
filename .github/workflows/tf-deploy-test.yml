@@ -20,7 +20,7 @@ on:
                     - innovation_development
             
 jobs:
-    terraform:
+    terraform-plan-dev:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
@@ -42,8 +42,6 @@ jobs:
                 AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                 AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
-
-
             - name: Initialize Terraform
               run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ init
 
@@ -53,10 +51,40 @@ jobs:
             - name: Plan Terraform changes
               run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ plan -out=tfplan
 
-            - name: Apply Terraform changes
-              run: terraform apply -auto-approve
-
             - name: Output environment
-              run: echo "Successfully deployed to test environment"
+              run: echo "Successfull terraform plan in dev environment"
+    deploy-to-test:
+        runs-on: ubuntu-latest
+        needs: terraform-plan-dev
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
 
-              
+            - name: Copy dev to test
+              run: |
+                cp -r -v terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/dev/*.tf terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/test/
+                echo "Copied dev to test environment"
+            
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.6.0
+            
+            - name: Configure AWS CLI
+              run: |
+                aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                aws configure set default.region $AWS_DEFAULT_REGION
+              env:
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+            
+            - name: Initialize Terraform
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ init
+
+            - name: Validate Terraform configuration
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider }}/test/ validate
+
+            - name: Apply Terraform changes
+              run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/test/ apply -auto-approve tfplan
