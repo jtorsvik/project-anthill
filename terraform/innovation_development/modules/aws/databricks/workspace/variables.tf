@@ -13,6 +13,11 @@ variable "databricks_account_id" {
   description = "(Required) The Databricks account ID."
 }
 
+variable "deployment_name" {
+  type        = string
+  description = "(Required) The name of the deployment for the Databricks workspace."
+}
+
 variable "role_arn" {
   type        = string
   description = "(Required) The AWS IAM role ARN that Databricks will assume for the workspace."

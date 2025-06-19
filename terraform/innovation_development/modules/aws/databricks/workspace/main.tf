@@ -26,6 +26,7 @@ resource "databricks_mws_workspace" "this" {
     account_id               = var.databricks_account_id
     workspace_name           = var.workspace_name
     aws_region               = var.region
+    deployment_name          = var.deployment_name
     
     credentials_id           = databricks_mws_credentials.this.credentials_id
     storage_configuration_id = databricks_mws_storage_configurations.this.storage_configuration_id

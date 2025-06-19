@@ -1,21 +1,21 @@
 output "databricks_workspace_id" {
     description = "Databricks workspace ID"
-    value       = databricks_workspace.this.id
+    value       = databricks_mws_workspace.this.id
 }
 
 output "databricks_workspace_url" {
     description = "Databricks workspace URL"
-    value       = databricks_workspace.this.workspace_url
+    value       = databricks_mws_workspace.this.workspace_url
 }
 
 output "databricks_workspace_name" {
     description = "Databricks workspace name"
-    value       = databricks_workspace.this.workspace_name
+    value       = databricks_mws_workspace.this.workspace_name
 }
 
 output "databricks_workspace_region" {
     description = "Databricks workspace region"
-    value       = databricks_workspace.this.region
+    value       = databricks_mws_workspace.this.region
 }
 
 output "databricks_workspace_credentials_id" {
@@ -35,12 +35,12 @@ output "databricks_workspace_network_id" {
 
 output "databricks_workspace_cidr_block" {
     description = "Databricks workspace CIDR block"
-    value       = databricks_workspace.this.cidr_block
+    value       = databricks_mws_workspace.this.cidr_block
 }
 
 output "databricks_workspace_tags" {
     description = "Databricks workspace tags"
-    value       = databricks_workspace.this.tags
+    value       = databricks_mws_workspace.this.tags
 }
 
 output "databricks_workspace_credentials_role_arn" {

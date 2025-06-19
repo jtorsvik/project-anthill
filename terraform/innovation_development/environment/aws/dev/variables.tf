@@ -73,6 +73,12 @@ variable "databricks_account_id" {
   type        = string
 }
 
+variable "deployment_name" {
+  description = "The deployment name for the Databricks workspace"
+  type        = string
+  default     = "project-anthill-dev"
+}
+
 variable "credentials_id" {
   description = "The credentials ID for the Databricks workspace"
   type        = string
