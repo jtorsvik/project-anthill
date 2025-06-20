@@ -112,13 +112,32 @@ jobs:
             - name: Plan Terraform changes
               run: terraform -chdir=terraform/${{github.event.inputs.workspace}}/environment/${{ github.event.inputs.cloud_provider}}/test/ plan -out=tfplan
 
-            - name: Commit & merge changes to main
-              run: |
-                  git add .
-                  git commit -m "Deploying changes to test environment for ${{ github.event.inputs.workspace }} on ${{ github.event.inputs.cloud_provider }}"
-                  git push origin ${{ github.event.inputs.workspace }}-test-deployment
-                  git switch main
-                  git merge --no-ff ${{ github.event.inputs.workspace }}-test-deployment
+            - name: Commit & create pull request for Terraform changes to test environment
+              uses: peter-evans/create-pull-request@v6
+              with:
+                  commit-message: "Deploy Terraform changes to test environment"
+                  branch: ${{ github.event.inputs.workspace }}-test-deployment
+                  base: main
+                  title: "Deploy Terraform changes to test environment"
+                  body: |
+                    """
+                    This pull request deploys the Terraform changes from the development environment 
+                    to the test environment for the `${{ github.event.inputs.workspace }}` workspace 
+                    on `${{ github.event.inputs.cloud_provider }}`.
+
+                    Please review the changes before merging.
+                    - Workspace: `${{ github.event.inputs.workspace }}`
+                    - Cloud Provider: `${{ github.event.inputs.cloud_provider }}`
+                    - Environment: Test
+                    - Branch: `${{ github.event.inputs.workspace }}-test-deployment`
+                    - Plan file: `tfplan`
+                    - Changes: 
+                      - Copied Terraform files from development to test environment
+                      - Planned changes for the test environment
+                    - Note: This PR does not apply the changes automatically.
+                    """
+
+                  
 
             ### Uncomment the following lines to apply the Terraform changes automatically
             # - name: Apply Terraform changes
