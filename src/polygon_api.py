@@ -2,6 +2,8 @@ from datetime import datetime, timedelta, timezone
 import time
 from polygon import RESTClient
 from requests.exceptions import HTTPError
+import pandas as pd
+
 
 class PolygonAPI():
     def __init__(self, api_key):
@@ -103,6 +105,42 @@ class PolygonAPI():
             last_working_day = today - timedelta(days=2)
         
         return last_working_day.strftime('%Y-%m-%d')
+    
+    def fetch_market_holiday_dates(self):
+
+        """
+        Fetches market close dates for the current year.
+
+        Description:
+        This method retrieves market close dates for the current year from the Polygon API.
+
+        Returns:
+        list: A list of market close dates in 'YYYY-MM-DD' format.
+        """
+        
+        from polygon.rest.models import MarketHoliday
+        market_close_dates = pd.DataFrame(columns=['Date', 'Exchange', 'Occasion'])
+        current_year = datetime.now().year
+
+        try:
+            # Fetch market close dates using the Polygon client
+            market_close_dates = pd.DataFrame(columns=['Date', 'Exchange', 'Occasion'])
+            current_year = datetime.now().year
+
+            # Fetch market close dates using the Polygon client
+            for holiday in self.client.get_market_holidays():
+                holiday_date = holiday.date
+                if (holiday_date[:4] == str(current_year)) and isinstance(holiday, MarketHoliday):
+                    market_close_dates.loc[len(market_close_dates)] = [holiday_date, holiday.exchange, holiday.name]
+
+            return market_close_dates
+        
+        except HTTPError as e:
+            if e.response.status_code == 429:
+                print("Rate limit hit. Please try again later.")
+            else:
+                raise
+
     
     def fetch_dividends(self, 
                         ticker,
