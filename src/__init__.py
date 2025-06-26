@@ -1,2 +1,4 @@
-# src/__init__.py
-# (empty)
+"""project-anthill
+"""
+
+__version__ = "0.1"

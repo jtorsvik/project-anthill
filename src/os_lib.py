@@ -8,7 +8,7 @@ class OSLib():
         self.is_windows = self.os.startswith('win')
         self.is_linux = self.os.startswith('linux')
     
-    def get_root_path(): # type: ignore
+    def get_root_path(self): # type: ignore
         """Get the root path of the git repository."""
 
         try:

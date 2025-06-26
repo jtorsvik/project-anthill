@@ -30,7 +30,8 @@ if __name__ == '__main__':
     # to_date = "2022-12-31"
     from_date = f"{to_date[:4]}-01-01"
 
-    project_root_path = OSLib.get_root_path()
+    oslib = OSLib()
+    project_root_path = oslib.get_root_path()
 
     for i, ticker in enumerate(tickers):
         # The sink path for the write operation

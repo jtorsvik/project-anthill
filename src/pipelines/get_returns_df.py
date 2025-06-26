@@ -7,7 +7,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.abspath(os.path.join('..', 'src')))
     from os_lib import OSLib
     # Import custom lib
-    oslib = OSLib
+    oslib = OSLib()
 
     # Get the root path of the repository
     repo_path = oslib.get_root_path()
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
         return all_files
 
-    all_file_paths = get_all_tickers_with_dirpaths(repo_path + '/data/polygon/daily')
+    all_file_paths = get_all_tickers_with_dirpaths(f'{repo_path}/data/polygon/daily')
 
     combined_df = pd.DataFrame()
 
