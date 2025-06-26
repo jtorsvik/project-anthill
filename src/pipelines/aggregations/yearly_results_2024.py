@@ -1,5 +1,6 @@
 if __name__ == '__main__':
     import pandas as pd
+    import numpy as np
     import os
     from modules.os_lib import OSLib
 
@@ -74,10 +75,19 @@ if __name__ == '__main__':
             avg_price_df.loc[ticker.upper(), 'returns_2024_%'] = (avg_price_2024['close'].iloc[-1] / avg_price_2024['close'].iloc[0]) - 1
             avg_price_df.loc[ticker.upper(), 'variance_2024'] = avg_price_2024['close'].var()
             avg_price_df.loc[ticker.upper(), 'covariance_2024'] = avg_price_2024['close'].cov(avg_price_2024['market']) 
-            processed_count += 1
-            if processed_count % 10 == 0:
-                print(f"Processed {processed_count} tickers...")
-    print(f"Finished processing {processed_count} tickers.")
+
+    # join the dfs on the index
+    agg_12mnd_df = avg_price_df.join(sum_divs, how='left')
+
+    # Calculate the dividend yield for each ticker
+    agg_12mnd_df['dividend_yield_%_2024'] = (agg_12mnd_df['total_dividend_2024'] / agg_12mnd_df['avg_price_2024']) * 100
+
+    risk_free_rate = 0.04
+    # Calculate the beta, capm and sharpe ratio for each ticker
+    agg_12mnd_df['beta_2024'] = agg_12mnd_df['covariance_2024'] / ((agg_12mnd_df.loc['COMP', 'variance_2024'] + agg_12mnd_df.loc['NDX', 'variance_2024']) / 2) # type: ignore
+    agg_12mnd_df["capm_2024"] = risk_free_rate + agg_12mnd_df['beta_2024'] * (np.mean([agg_12mnd_df.loc['COMP', 'returns_2024_%'], agg_12mnd_df.loc['NDX', 'returns_2024_%']]) - risk_free_rate) # type: ignore
+    agg_12mnd_df["sharpe_2024"] = (agg_12mnd_df["returns_2024_%"] - risk_free_rate) / np.sqrt(agg_12mnd_df['variance_2024'])
+
 
     # Save the results to a parquet file
     print(f"Saving results to {sink_path}...")
