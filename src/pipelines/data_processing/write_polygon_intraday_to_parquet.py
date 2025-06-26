@@ -23,8 +23,8 @@ if __name__ == '__main__':
     client = PolygonAPI(api_key=api_key)
 
     # Get the last working day
-    intra_day = client.last_working_day()
-    # intra_day = "2025-06-06"
+    # intra_day = client.last_working_day()
+    intra_day = "2025-06-24"
     oslib = OSLib()
     project_root_path = oslib.get_root_path()
 
