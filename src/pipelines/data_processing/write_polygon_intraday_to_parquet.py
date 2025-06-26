@@ -7,8 +7,8 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
 
     # Import custom PolygonAPI class
-    from polygon_api import PolygonAPI
-    from os_lib import OSLib
+    from modules.polygon_api import PolygonAPI
+    from modules.os_lib import OSLib
 
     load_dotenv()
     api_key = os.getenv('POLYGON_API_KEY')
@@ -25,8 +25,8 @@ if __name__ == '__main__':
     # Get the last working day
     intra_day = client.last_working_day()
     # intra_day = "2025-06-06"
-
-    project_root_path = OSLib.get_root_path()
+    oslib = OSLib()
+    project_root_path = oslib.get_root_path()
 
     # Fetch intraday data for each ticker and save to parquet files
     for i, ticker in enumerate(tickers):

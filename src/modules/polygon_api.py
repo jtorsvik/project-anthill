@@ -57,7 +57,7 @@ class PolygonAPI():
                     from_=from_date,
                     to=to_date
                 ):
-                    timestamp = datetime.fromtimestamp(a.timestamp / 1000, timezone.utc)
+                    timestamp = datetime.fromtimestamp(a.timestamp / 1000, timezone.utc) # type: ignore
                     aggs[timestamp] = a.__dict__
 
                 # If sleep is True, wait for a short time to avoid hitting rate limits
@@ -104,7 +104,7 @@ class PolygonAPI():
         elif today.weekday() == 6:
             last_working_day = today - timedelta(days=2)
         
-        return last_working_day.strftime('%Y-%m-%d')
+        return last_working_day.strftime('%Y-%m-%d') # type: ignore
     
     def fetch_market_holiday_dates(self):
 
@@ -119,19 +119,17 @@ class PolygonAPI():
         """
         
         from polygon.rest.models import MarketHoliday
-        market_close_dates = pd.DataFrame(columns=['Date', 'Exchange', 'Occasion'])
-        current_year = datetime.now().year
 
         try:
             # Fetch market close dates using the Polygon client
-            market_close_dates = pd.DataFrame(columns=['Date', 'Exchange', 'Occasion'])
+            market_close_dates = list()
             current_year = datetime.now().year
 
             # Fetch market close dates using the Polygon client
             for holiday in self.client.get_market_holidays():
-                holiday_date = holiday.date
-                if (holiday_date[:4] == str(current_year)) and isinstance(holiday, MarketHoliday):
-                    market_close_dates.loc[len(market_close_dates)] = [holiday_date, holiday.exchange, holiday.name]
+                holiday_date = holiday.date # type: ignore
+                if (holiday_date[:4] == str(current_year)) and isinstance(holiday, MarketHoliday): # type: ignore
+                    market_close_dates.append([holiday_date, holiday.exchange, holiday.name]) # type: ignore
 
             return market_close_dates
         
@@ -190,7 +188,7 @@ class PolygonAPI():
                     ):
                         dividends_recorded = True
                         # Store dividend data in a dictionary with ex_dividend_date as the key
-                        dividends[d.ex_dividend_date] = d.__dict__
+                        dividends[d.ex_dividend_date] = d.__dict__ # type: ignore
                         
                         # If sleep is True, wait for a short time to avoid hitting rate limits
                         if sleep:
@@ -201,7 +199,7 @@ class PolygonAPI():
                             return None
                     else:
                         # If dividends were recorded, delete the local variable and return the dividends dictionary
-                        del dividends_recorded
+                        del dividends_recorded # type: ignore
                         return dividends  # return the dividends dictionary if successful
             # Handle HTTP errors
             except HTTPError as e:

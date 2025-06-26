@@ -6,11 +6,10 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
 
     # Import custom PolygonAPI class
-    from polygon_api import PolygonAPI
-    from os_lib import OSLib
+    from modules import polygon_api
+    from modules import os_lib
 
     # from polygon import RESTClient
-
     load_dotenv()
     api_key = os.getenv('POLYGON_API_KEY')
 
@@ -24,13 +23,13 @@ if __name__ == '__main__':
         ]
 
     # Initialize the Polygon API client
-    client = PolygonAPI(api_key=api_key)
+    client = polygon_api.PolygonAPI(api_key=api_key)
 
     to_date = client.last_working_day()
     # to_date = "2022-12-31"
     from_date = f"{to_date[:4]}-01-01"
 
-    oslib = OSLib()
+    oslib = os_lib.OSLib()
     project_root_path = oslib.get_root_path()
 
     for i, ticker in enumerate(tickers):

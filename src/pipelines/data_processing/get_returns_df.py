@@ -5,7 +5,7 @@ if __name__ == '__main__':
     import os
 
     sys.path.append(os.path.abspath(os.path.join('..', 'src')))
-    from os_lib import OSLib
+    from modules.os_lib import OSLib
     # Import custom lib
     oslib = OSLib()
 

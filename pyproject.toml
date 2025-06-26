@@ -5,6 +5,7 @@ description = "Repository for the Anthill project"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "dotenv>=0.9.9",
     "kedro>=0.19.14",
     "matplotlib>=3.10.3",
     "numpy>=2.2.6",
@@ -19,5 +20,9 @@ dependencies = [
     "torch>=2.7.0",
 ]
 
-[tool.setuptools]
-packages = ['scripts']
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/modules"]
