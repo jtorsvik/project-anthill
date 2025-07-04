@@ -1,7 +1,8 @@
-import sys
 import subprocess
+import sys
 
-class OSLib():
+
+class OSLib:
 
     def __init__(self):
         self.os = sys.platform

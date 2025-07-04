@@ -1,11 +1,12 @@
-from datetime import datetime, timedelta, timezone
 import time
+from datetime import UTC, datetime, timedelta, timezone
+
+import pandas as pd
 from polygon import RESTClient
 from requests.exceptions import HTTPError
-import pandas as pd
 
 
-class PolygonAPI():
+class PolygonAPI:
     def __init__(self, api_key):
         self.api_key = api_key
         self.client = RESTClient(api_key=self.api_key)
@@ -57,7 +58,7 @@ class PolygonAPI():
                     from_=from_date,
                     to=to_date
                 ):
-                    timestamp = datetime.fromtimestamp(a.timestamp / 1000, timezone.utc) # type: ignore
+                    timestamp = datetime.fromtimestamp(a.timestamp / 1000, UTC) # type: ignore
                     aggs[timestamp] = a.__dict__
 
                 # If sleep is True, wait for a short time to avoid hitting rate limits
@@ -96,10 +97,7 @@ class PolygonAPI():
         if today.weekday() == 0:
             # If today is Monday, subtract three days to get Friday
             last_working_day = today - timedelta(days=3)
-        elif today.weekday() <= 4:
-            last_working_day = today - timedelta(days=1)
-        # If today is Saturday, subtract one day to get Friday
-        elif today.weekday() == 5:
+        elif today.weekday() <= 4 or today.weekday() == 5:
             last_working_day = today - timedelta(days=1)
         elif today.weekday() == 6:
             last_working_day = today - timedelta(days=2)

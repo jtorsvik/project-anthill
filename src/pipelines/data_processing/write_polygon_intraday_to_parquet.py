@@ -1,14 +1,12 @@
 # If the script is run directly, execute the following code block
 if __name__ == '__main__':
-
-    # Import necessary libraries
-    import pandas as pd
     import os
+
+    import pandas as pd
     from dotenv import load_dotenv
 
-    # Import custom PolygonAPI class
-    from modules.polygon_api import PolygonAPI
     from modules.os_lib import OSLib
+    from modules.polygon_api import PolygonAPI
 
     load_dotenv()
     api_key = os.getenv('POLYGON_API_KEY')
@@ -24,7 +22,7 @@ if __name__ == '__main__':
 
     # Get the last working day
     # intra_day = client.last_working_day()
-    intra_day = "2025-06-24"
+    intra_day = "2025-07-02"
     oslib = OSLib()
     project_root_path = oslib.get_root_path()
 

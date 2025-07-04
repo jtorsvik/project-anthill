@@ -26,3 +26,23 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/modules"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.11",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # Pyflakes
+    "UP",  # Pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "I"    # isort
+    ]
+ignore = [
+    "F401", # unused-import
+    "E501", # line-too-long
+    "B007", # unused-loop-control-variable
+    ]

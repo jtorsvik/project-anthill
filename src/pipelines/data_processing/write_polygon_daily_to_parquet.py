@@ -1,13 +1,13 @@
 if __name__ == '__main__':
 
     # Import necessary libraries
-    import pandas as pd
     import os
+
+    import pandas as pd
     from dotenv import load_dotenv
 
     # Import custom PolygonAPI class
-    from modules import polygon_api
-    from modules import os_lib
+    from modules import os_lib, polygon_api
 
     # from polygon import RESTClient
     load_dotenv()

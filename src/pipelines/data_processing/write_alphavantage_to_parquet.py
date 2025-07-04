@@ -4,8 +4,10 @@ the Alpha Vantage API and saves it as a Parquet file.
 '''
 
 # Import necessary libraries
+import json
+
 import pandas as pd
-import requests, json
+import requests
 
 print('Ingesting data from Alpha Vantage API')
 # Fetch data from Alpha Vantage API

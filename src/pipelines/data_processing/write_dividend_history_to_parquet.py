@@ -1,13 +1,15 @@
 if __name__ == '__main__':
 
    # Import necessary libraries
-    import pandas as pd
     import os
+
+    import pandas as pd
     from dotenv import load_dotenv
+
+    from modules.os_lib import OSLib
 
     # Import custom PolygonAPI class
     from modules.polygon_api import PolygonAPI
-    from modules.os_lib import OSLib
 
     load_dotenv()
     api_key = os.getenv('POLYGON_API_KEY')

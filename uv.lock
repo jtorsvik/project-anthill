@@ -1011,6 +1011,11 @@ dependencies = [
     { name = "torch" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "ruff" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "dotenv", specifier = ">=0.9.9" },
@@ -1027,6 +1032,9 @@ requires-dist = [
     { name = "statsmodels", specifier = ">=0.14.4" },
     { name = "torch", specifier = ">=2.7.0" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "ruff", specifier = ">=0.11.11" }]
 
 [[package]]
 name = "pyarrow"

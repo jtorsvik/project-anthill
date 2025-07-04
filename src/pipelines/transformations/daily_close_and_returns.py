@@ -1,7 +1,8 @@
 if __name__ == '__main__':
+    import os
+
     import numpy as np
     import pandas as pd
-    import os
 
     from modules.os_lib import OSLib
     # Import custom lib

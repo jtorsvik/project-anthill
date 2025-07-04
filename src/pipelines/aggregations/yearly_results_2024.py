@@ -1,7 +1,9 @@
 if __name__ == '__main__':
-    import pandas as pd
-    import numpy as np
     import os
+
+    import numpy as np
+    import pandas as pd
+
     from modules.os_lib import OSLib
 
     print("Initializing OSLib and getting repository root path...")

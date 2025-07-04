@@ -2,12 +2,15 @@ if __name__ == "__main__":
 
     # Import necessary libraries
     import os
-    import pandas as pd
     from datetime import datetime
+
+    import pandas as pd
     from dotenv import load_dotenv
 
-    from modules.polygon_api import PolygonAPI  # Custom module for Polygon API interaction
-    from modules.os_lib import OSLib           # Custom module for OS-related utilities
+    from modules.os_lib import OSLib  # Custom module for OS-related utilities
+    from modules.polygon_api import (
+        PolygonAPI,  # Custom module for Polygon API interaction
+    )
 
     # Load API key from environment variable
     load_dotenv()  # Load environment variables from a .env file
