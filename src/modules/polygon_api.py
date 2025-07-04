@@ -11,22 +11,23 @@ class PolygonAPI:
         self.api_key = api_key
         self.client = RESTClient(api_key=self.api_key)
 
-    def fetch_aggs_with_backoff(self,
-                                ticker,
-                                from_date,
-                                to_date,
-                                multiplier=1,
-                                timespan='minute',
-                                limit=1000,
-                                sleep=True):
-        
+    def fetch_aggs_with_backoff(
+        self,
+        ticker,
+        from_date,
+        to_date,
+        multiplier=1,
+        timespan="minute",
+        limit=1000,
+        sleep=True,
+    ):
         """
 
         Fetches aggregate data for a given ticker symbol with exponential backoff for rate limiting.
 
         Description:
         This method retrieves aggregate data for a specified ticker symbol from the Polygon API.
-        
+
         Parameters:
         ticker (str): The ticker symbol to fetch aggregate data for.
         from_date (str): The start date for the data in 'YYYY-MM-DD' format.
@@ -35,11 +36,10 @@ class PolygonAPI:
         timespan (str): The timespan for the aggregation (default is 'minute').
         limit (int): The maximum number of results to return (default is 1000).
         sleep (bool): Whether to sleep between requests to avoid hitting rate limits (default is True).
-        
+
         Returns:
         dict: A dictionary containing aggregate data with timestamps as keys.
         """
-
 
         retries = 0
         max_retries = 5
@@ -56,12 +56,12 @@ class PolygonAPI:
                     timespan=timespan,
                     limit=limit,
                     from_=from_date,
-                    to=to_date
+                    to=to_date,
                 ):
-                    timestamp = datetime.fromtimestamp(a.timestamp / 1000, UTC) # type: ignore
+                    timestamp = datetime.fromtimestamp(a.timestamp / 1000, UTC)  # type: ignore
                     aggs[timestamp] = a.__dict__
 
-                # If sleep is True, wait for a short time to avoid hitting rate limits
+                    # If sleep is True, wait for a short time to avoid hitting rate limits
                     if sleep:
                         time.sleep(0.25)
                 break  # exit loop if successful
@@ -79,10 +79,10 @@ class PolygonAPI:
                 else:
                     raise  # re-raise other HTTP errors
         return aggs
-    
-        # Function to calculate the last working day
-    def last_working_day(self):
 
+        # Function to calculate the last working day
+
+    def last_working_day(self):
         """
         Calculates the last working day based on the current date.
 
@@ -101,11 +101,10 @@ class PolygonAPI:
             last_working_day = today - timedelta(days=1)
         elif today.weekday() == 6:
             last_working_day = today - timedelta(days=2)
-        
-        return last_working_day.strftime('%Y-%m-%d') # type: ignore
-    
-    def fetch_market_holiday_dates(self):
 
+        return last_working_day.strftime("%Y-%m-%d")  # type: ignore
+
+    def fetch_market_holiday_dates(self):
         """
         Fetches market close dates for the current year.
 
@@ -115,7 +114,7 @@ class PolygonAPI:
         Returns:
         list: A list of market close dates in 'YYYY-MM-DD' format.
         """
-        
+
         from polygon.rest.models import MarketHoliday
 
         try:
@@ -125,29 +124,32 @@ class PolygonAPI:
 
             # Fetch market close dates using the Polygon client
             for holiday in self.client.get_market_holidays():
-                holiday_date = holiday.date # type: ignore
-                if (holiday_date[:4] == str(current_year)) and isinstance(holiday, MarketHoliday): # type: ignore
-                    market_close_dates.append([holiday_date, holiday.exchange, holiday.name]) # type: ignore
+                holiday_date = holiday.date  # type: ignore
+                if (holiday_date[:4] == str(current_year)) and isinstance(
+                    holiday, MarketHoliday
+                ):  # type: ignore
+                    market_close_dates.append(
+                        [holiday_date, holiday.exchange, holiday.name]
+                    )  # type: ignore
 
             return market_close_dates
-        
+
         except HTTPError as e:
             if e.response.status_code == 429:
                 print("Rate limit hit. Please try again later.")
             else:
                 raise
 
-    
-    def fetch_dividends(self, 
-                        ticker,
-                        limit=10,
-                        sort='ex_dividend_date',
-                        order='desc',
-                        sleep=True,
-                        sleep_time=0.25,
-                        max_retries=5,
-                        ):
-        
+    def fetch_dividends(
+        self,
+        ticker,
+        limit=10,
+        sort="ex_dividend_date",
+        order="desc",
+        sleep=True,
+        sleep_time=0.25,
+        max_retries=5,
+    ):
         """
         Fetches dividends for a given ticker symbol.
 
@@ -159,11 +161,10 @@ class PolygonAPI:
         limit (int): The maximum number of dividends to return.
         sort (str): The field to sort the dividends by.
         order (str): The order of sorting, either 'asc' or 'desc'.
-        
+
         Returns:
         dict: A dictionary containing dividend data with ex-dividend dates as keys.
         """
-
 
         dividends = dict()
         retries = 0
@@ -179,26 +180,25 @@ class PolygonAPI:
                 else:
                     # Fetch dividends using the Polygon client
                     for d in self.client.list_dividends(
-                        ticker=ticker,
-                        limit=limit,
-                        sort=sort,
-                        order=order
+                        ticker=ticker, limit=limit, sort=sort, order=order
                     ):
                         dividends_recorded = True
                         # Store dividend data in a dictionary with ex_dividend_date as the key
-                        dividends[d.ex_dividend_date] = d.__dict__ # type: ignore
-                        
+                        dividends[d.ex_dividend_date] = d.__dict__  # type: ignore
+
                         # If sleep is True, wait for a short time to avoid hitting rate limits
                         if sleep:
                             time.sleep(sleep_time)
-                    
+
                     # If no dividends were recorded, return None
-                    if 'dividends_recorded' not in locals():
-                            return None
+                    if "dividends_recorded" not in locals():
+                        return None
                     else:
                         # If dividends were recorded, delete the local variable and return the dividends dictionary
-                        del dividends_recorded # type: ignore
-                        return dividends  # return the dividends dictionary if successful
+                        del dividends_recorded  # type: ignore
+                        return (
+                            dividends  # return the dividends dictionary if successful
+                        )
             # Handle HTTP errors
             except HTTPError as e:
                 if e.response.status_code == 429:
