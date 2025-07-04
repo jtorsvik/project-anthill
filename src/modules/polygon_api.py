@@ -21,7 +21,7 @@ class PolygonAPI:
         timespan="minute",
         limit=1000,
         sleep=True,
-    ):
+    ) -> dict:
         """
 
         Fetches aggregate data for a given ticker symbol with exponential backoff for rate limiting.
@@ -83,7 +83,7 @@ class PolygonAPI:
 
         # Function to calculate the last working day
 
-    def last_working_day(self):
+    def last_working_day(self) -> str:
         """
         Calculates the last working day based on the current date.
 

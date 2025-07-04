@@ -1,5 +1,6 @@
 # If the script is run directly, execute the following code block
 if __name__ == "__main__":
+    import json
     import os
 
     import pandas as pd
@@ -11,42 +12,20 @@ if __name__ == "__main__":
     load_dotenv()
     api_key = os.getenv("POLYGON_API_KEY")
 
-    # All tickers to fetch data for
-    tickers = [
-        "AAPL",
-        "MSFT",
-        "GOOGL",
-        "IBM",
-        "AMZN",
-        "NVDA",
-        "XOM",
-        "CVX",
-        "WMT",
-        "MMM",
-        "ARE",
-        "ALLE",
-        "JPM",
-        "V",
-        "MA",
-        "PEP",
-        "CSCO",
-        "BA",
-        "ADBE",
-        "CAT",
-        "BLK",
-        "INTC",
-        "NKE",
-        "MDLZ",
-    ]
+    oslib = OSLib()
+    project_root_path = oslib.get_root_path()
+
+   # All tickers to fetch data for
+    stock_tick_path = f"{project_root_path}/data/polygon/portfolio/stock_tickers.json"
+    with open(stock_tick_path) as s:
+        tickers = json.load(s)
 
     # Initialize the PolygonAPI client
     client = PolygonAPI(api_key=api_key)
 
     # Get the last working day
-    # intra_day = client.last_working_day()
-    intra_day = "2025-07-02"
-    oslib = OSLib()
-    project_root_path = oslib.get_root_path()
+    intra_day = client.last_working_day()
+    # intra_day = "2025-07-02"
 
     # Fetch intraday data for each ticker and save to parquet files
     for i, ticker in enumerate(tickers):

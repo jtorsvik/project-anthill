@@ -1,5 +1,6 @@
 if __name__ == "__main__":
     # Import necessary libraries
+    import json
     import os
 
     import pandas as pd
@@ -12,35 +13,19 @@ if __name__ == "__main__":
     load_dotenv()
     api_key = os.getenv("POLYGON_API_KEY")
 
+    oslib = os_lib.OSLib()
+    project_root_path = oslib.get_root_path()
+
     # All tickers to fetch data for
-    tickers = [
-        "AAPL",
-        "MSFT",
-        "GOOGL",
-        "IBM",
-        "AMZN",
-        "NVDA",
-        "XOM",
-        "CVX",
-        "WMT",
-        "MMM",
-        "ARE",
-        "ALLE",
-        "JPM",
-        "V",
-        "MA",
-        "PEP",
-        "CSCO",
-        "BA",
-        "ADBE",
-        "CAT",
-        "BLK",
-        "INTC",
-        "NKE",
-        "MDLZ",
-        "I:NDX",
-        "I:COMP",
-    ]
+    stock_tick_path = f"{project_root_path}/data/polygon/portfolio/stock_tickers.json"
+    idx_tick_path = f"{project_root_path}/data/polygon/portfolio/idx_tickers.json"
+    with open(stock_tick_path) as s:
+        stock_ticks = json.load(s)
+    
+    with open(idx_tick_path) as i:
+        idx_ticks = json.load(i)
+    
+    tickers = stock_ticks + idx_ticks
 
     # Initialize the Polygon API client
     client = polygon_api.PolygonAPI(api_key=api_key)
@@ -49,8 +34,7 @@ if __name__ == "__main__":
     # to_date = "2022-12-31"
     from_date = f"{to_date[:4]}-01-01"
 
-    oslib = os_lib.OSLib()
-    project_root_path = oslib.get_root_path()
+
 
     for i, ticker in enumerate(tickers):
         # The sink path for the write operation

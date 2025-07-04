@@ -8,16 +8,15 @@ class OSLib:
         self.is_windows = self.os.startswith("win")
         self.is_linux = self.os.startswith("linux")
 
-    def get_root_path(self):  # type: ignore
-        """Get the root path of the git repository."""
+    def get_root_path(self) -> str:  # type: ignore
 
-        try:
-            # Check if the current directory is a git repository
-            repo_path = (
-                subprocess.check_output(["git", "rev-parse", "--show-toplevel"])
-                .decode()
-                .strip()
-            )
-        except subprocess.CalledProcessError:
-            return None
-        return repo_path
+        """
+        Get the root path of the git repository.
+        """
+
+        # Return the current directory is a git repository 
+        return (
+            subprocess.check_output(["git", "rev-parse", "--show-toplevel"])
+            .decode()
+            .strip()
+            ) 
