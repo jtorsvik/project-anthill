@@ -18,6 +18,6 @@ class OSLib:
                 .decode()
                 .strip()
             )
-            return repo_path
         except subprocess.CalledProcessError:
             return None
+        return repo_path

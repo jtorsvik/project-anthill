@@ -1,5 +1,6 @@
 import time
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
+from typing import cast
 
 import pandas as pd
 from polygon import RESTClient
@@ -122,9 +123,11 @@ class PolygonAPI:
             market_close_dates = list()
             current_year = datetime.now().year
 
+            holidays = self.client.get_market_holidays()
             # Fetch market close dates using the Polygon client
-            for holiday in self.client.get_market_holidays():
-                holiday_date = holiday.date  # type: ignore
+            for holiday in holidays:
+                holiday = cast(dict, holiday)
+                holiday_date = holiday.date # type: ignore
                 if (holiday_date[:4] == str(current_year)) and isinstance(
                     holiday, MarketHoliday
                 ):  # type: ignore
@@ -148,7 +151,6 @@ class PolygonAPI:
         order="desc",
         sleep=True,
         sleep_time=0.25,
-        max_retries=5,
     ):
         """
         Fetches dividends for a given ticker symbol.
@@ -167,48 +169,26 @@ class PolygonAPI:
         """
 
         dividends = dict()
-        retries = 0
-        max_retries = max_retries
-        backoff = 1
 
-        while retries < max_retries:
-            try:
-                # If the ticker does not have dividends, return None
-                if not self.client.list_dividends(ticker=ticker):
-                    print(f"No dividends found for ticker {ticker}.")
-                    return None
-                else:
-                    # Fetch dividends using the Polygon client
-                    for d in self.client.list_dividends(
-                        ticker=ticker, limit=limit, sort=sort, order=order
-                    ):
-                        dividends_recorded = True
-                        # Store dividend data in a dictionary with ex_dividend_date as the key
-                        dividends[d.ex_dividend_date] = d.__dict__  # type: ignore
+        # If the ticker does not have dividends, return None
+        if not self.client.list_dividends(ticker=ticker):
+            print(f"No dividends found for ticker {ticker}.")
+            return None
+        # Fetch dividends using the Polygon client
+        for d in self.client.list_dividends(
+            ticker=ticker, limit=limit, sort=sort, order=order
+        ):
+            dividends_recorded = True
+            # Store dividend data in a dictionary with ex_dividend_date as the key
+            dividends[d.ex_dividend_date] = d.__dict__  # type: ignore
 
-                        # If sleep is True, wait for a short time to avoid hitting rate limits
-                        if sleep:
-                            time.sleep(sleep_time)
+            # If sleep is True, wait for a short time to avoid hitting rate limits
+            if sleep:
+                time.sleep(sleep_time)
 
-                    # If no dividends were recorded, return None
-                    if "dividends_recorded" not in locals():
-                        return None
-                    else:
-                        # If dividends were recorded, delete the local variable and return the dividends dictionary
-                        del dividends_recorded  # type: ignore
-                        return (
-                            dividends  # return the dividends dictionary if successful
-                        )
-            # Handle HTTP errors
-            except HTTPError as e:
-                if e.response.status_code == 429:
-                    if retries < max_retries:
-                        print(f"Rate limit hit. Retrying in {backoff} seconds...")
-                        time.sleep(backoff)
-                        retries += 1
-                        backoff *= 2  # exponential backoff
-                    else:
-                        print("Max retries exceeded.")
-                        break
-                else:
-                    raise  # re-raise other HTTP errors
+        # If no dividends were recorded, return None
+        if "dividends_recorded" not in locals():
+            return None
+        # If dividends were recorded, delete the local variable and return the dividends dictionary
+        del dividends_recorded  # type: ignore
+        return dividends  # return the dividends dictionary if successful

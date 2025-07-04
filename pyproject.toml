@@ -18,6 +18,7 @@ dependencies = [
     "seaborn>=0.13.2",
     "statsmodels>=0.14.4",
     "torch>=2.7.0",
+    "typing>=3.10.0.0",
 ]
 
 [build-system]
@@ -34,15 +35,19 @@ dev = [
 
 [tool.ruff.lint]
 select = [
-    "E",   # pycodestyle
-    "F",   # Pyflakes
-    "UP",  # Pyupgrade
-    "B",   # flake8-bugbear
-    "SIM", # flake8-simplify
-    "I"    # isort
-    ]
+    "B",    # flake8-bugbear
+    "E",    # pycodestyle
+    "F",    # Pyflakes
+    "I",    # isort
+    "N",    # Pep-8 naming rules
+    "R",    # Refactor rules
+    "UP",   # Pyupgrade
+    "SIM",  # flake8-simplify
+    "AIR",  # AirFlow linter
+    "FAST", # FastAPI linter
+]
 ignore = [
     "F401", # unused-import
     "E501", # line-too-long
     "B007", # unused-loop-control-variable
-    ]
+]
