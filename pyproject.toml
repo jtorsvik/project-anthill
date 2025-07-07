@@ -5,6 +5,7 @@ description = "Repository for the Anthill project"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "apache-airflow==3.0.2",
     "dotenv>=0.9.9",
     "kedro>=0.19.14",
     "matplotlib>=3.10.3",

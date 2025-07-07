@@ -137,3 +137,10 @@ To ensure robust data governance, Project Anthill leverages [Unity Catalog](http
 - **Integration with AWS IAM:** Unity Catalog can be integrated with AWS IAM roles and policies, providing seamless authentication and authorization aligned with organizational security standards.
 
 By adopting Unity Catalog, Project Anthill ensures that all ingested, processed, and shared data is governed according to best practices, supporting data privacy, regulatory compliance, and secure analytics workflows.
+
+## Required Package installs
+
+```bash
+pipx install uv
+uv run pre-commit install
+```
