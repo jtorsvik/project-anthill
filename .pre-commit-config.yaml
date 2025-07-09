@@ -32,7 +32,7 @@ repos:
         name: commitizen
         stages: [ commit-msg ]
         language: system
-        entry: uv run cz check --commit-msg-file
+        entry: git cz check --commit-msg-file
         types: [ python ]
   - repo: local
     hooks:

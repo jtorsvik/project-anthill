@@ -1,6 +1,6 @@
 # Project Anthill :ant:
 
-> **Disclaimer:**  
+> **Disclaimer:**
 > The structure and examples provided in this repository are for demonstration and educational purposes. In a production environment, it is recommended to separate infrastructure code into multiple repositories based on team responsibilities and access requirements. Sensitive resources such as networking and security should be managed by dedicated platform teams, while analytics and application teams should have access only to the resources necessary for their workflows. Always follow your organization's security, compliance, and access control policies when implementing infrastructure as code.
 
 ## Introduction
@@ -115,10 +115,10 @@ Planned implementations:
 - Databricks code deployment from Dev -> Test -> Prod
 - Automatic integration testing in Test environment
 - Automatic unit testing in Test environment
-- Linting and static code analysis for Terraform and Python code
+- [DONE] Linting and static code analysis for Terraform and Python code
 - Automated security scanning of Terraform configurations and dependencies
-- Continuous delivery of Python packages to internal or public registries
-- Automated documentation generation and publishing
+- [DONE] Continuous delivery of Python packages to internal or public registries
+- [DONE] Automated documentation generation and publishing
 - Notification and alerting on pipeline failures or policy violations
 - Environment-specific configuration validation before deployment
 - Rollback and recovery workflows for failed deployments
@@ -143,4 +143,5 @@ By adopting Unity Catalog, Project Anthill ensures that all ingested, processed,
 ```bash
 pipx install uv
 uv run pre-commit install
+uv run pre-commit run
 ```
