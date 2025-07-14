@@ -1,10 +1,23 @@
 if __name__ == "__main__":
+    """
+    Script to fetch daily aggregated stock and index data from Polygon.io API and save it as Parquet files.
+    This script loads ticker symbols from JSON files, initializes the PolygonAPI client, and iterates through each ticker to fetch daily data for the current year. The data is structured into a Pandas DataFrame and saved to a Parquet file, skipping files that already exist and are up-to-date.
+    Environment variables:
+        POLYGON_API_KEY: API key for Polygon.io.
+    Dependencies:
+        - pandas
+        - dotenv
+        - modules.os_lib
+        - modules.polygon_api
+    Usage:
+        Run as a standalone script to update daily data for all tickers listed in the specified JSON files.
+    """
     # Import necessary libraries
     import json
     import os
 
-    import pandas as pd
-    from dotenv import load_dotenv
+    import pandas as pd  # type: ignore
+    from dotenv import load_dotenv  # type: ignore
 
     # Import custom PolygonAPI class
     from modules import os_lib, polygon_api
@@ -21,10 +34,10 @@ if __name__ == "__main__":
     idx_tick_path = f"{project_root_path}/data/polygon/portfolio/idx_tickers.json"
     with open(stock_tick_path) as s:
         stock_ticks = json.load(s)
-    
+
     with open(idx_tick_path) as i:
         idx_ticks = json.load(i)
-    
+
     tickers = stock_ticks + idx_ticks
 
     # Initialize the Polygon API client
@@ -33,8 +46,6 @@ if __name__ == "__main__":
     to_date = client.last_working_day()
     # to_date = "2022-12-31"
     from_date = f"{to_date[:4]}-01-01"
-
-
 
     for i, ticker in enumerate(tickers):
         # The sink path for the write operation
@@ -75,7 +86,7 @@ if __name__ == "__main__":
 
         print("Structuring data into a Pandas DataFrame...")
         df = pd.DataFrame(intra_day_ticker).T
-        df.index = pd.to_datetime(df.index, utc=True)
+        df.index = pd.to_datetime(df.index, utc=True)  # type: ignore
         df.index.astype("datetime64[ns, UTC]")
         df.index.name = "date"
 

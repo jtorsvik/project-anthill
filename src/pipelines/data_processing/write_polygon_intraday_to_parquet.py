@@ -1,10 +1,16 @@
+"""Script to fetch intraday stock data from Polygon API and save it as parquet files.
+
+This script loads a list of stock tickers, retrieves intraday data for each ticker
+using the Polygon API, and saves the results in parquet format.
+"""
+
 # If the script is run directly, execute the following code block
 if __name__ == "__main__":
     import json
     import os
 
-    import pandas as pd
-    from dotenv import load_dotenv
+    import pandas as pd  # type: ignore
+    from dotenv import load_dotenv  # type: ignore
 
     from modules.os_lib import OSLib
     from modules.polygon_api import PolygonAPI
@@ -15,7 +21,7 @@ if __name__ == "__main__":
     oslib = OSLib()
     project_root_path = oslib.get_root_path()
 
-   # All tickers to fetch data for
+    # All tickers to fetch data for
     stock_tick_path = f"{project_root_path}/data/polygon/portfolio/stock_tickers.json"
     with open(stock_tick_path) as s:
         tickers = json.load(s)
@@ -25,7 +31,7 @@ if __name__ == "__main__":
 
     # Get the last working day
     intra_day = client.last_working_day()
-    # intra_day = "2025-07-02"
+    # intra_day = "2025-07-07"
 
     # Fetch intraday data for each ticker and save to parquet files
     for i, ticker in enumerate(tickers):
