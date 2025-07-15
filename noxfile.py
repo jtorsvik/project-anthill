@@ -3,7 +3,9 @@
 import nox  # type: ignore
 
 
-@nox.session  # type: ignore
+@nox.session(
+    python=["3.12", "3.13"],  # Specify the Python versions to test against
+)
 def tests(session: nox.Session) -> None:
     """Run tests using pytest.
 
@@ -21,7 +23,9 @@ def tests(session: nox.Session) -> None:
     session.run("pytest")
 
 
-@nox.session  # type: ignore
+@nox.session(
+    python=["3.12", "3.13"],  # Specify the Python versions to test against
+)
 def lint(session: nox.Session) -> None:
     """Lint the codebase using Flake8.
 
