@@ -22,10 +22,6 @@ repos:
         entry: uv run ruff format
         language: system
         types: [python]
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: "v0.991"
-  #   hooks:
-  #     - id: mypy
   - repo: local
     hooks:
       - id: commitizen
@@ -34,6 +30,10 @@ repos:
         language: system
         entry: git cz check --commit-msg-file
         types: [ python ]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v0.991"
+    hooks:
+      - id: mypy
   # - repo: https://github.com/econchick/interrogate
   #   rev: 1.5.0
   #   hooks:
