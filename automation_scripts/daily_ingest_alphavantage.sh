@@ -1,1 +1,1 @@
-uv run python ~/git_repos/project-anthill/src/write_alphavantage_to_parquet.py
+uv run python src/pipelines/data_processing/write_alphavantage_to_parquet.py

@@ -19,6 +19,13 @@ if __name__ == "__main__":
     import pandas as pd  # type: ignore
     from dotenv import load_dotenv  # type: ignore
 
+    def write_to_parquet(df: pd.DataFrame, output_path: str) -> None:
+        """Write a DataFrame to a Parquet file, creating parent directories if needed."""
+        directory = os.path.dirname(output_path)
+        if directory:
+            os.makedirs(directory, exist_ok=True)
+        df.to_parquet(output_path, index=True)
+
     # Import custom PolygonAPI class
     from modules import os_lib, polygon_api
 
@@ -91,6 +98,6 @@ if __name__ == "__main__":
         df.index.name = "date"
 
         print("Saving to parquet file...")
-        df.to_parquet(sink_root_path, index=True)
+        write_to_parquet(df, sink_root_path)
         print(f"Data for {ticker} written to {sink_root_path}")
         print("----------------------------")
