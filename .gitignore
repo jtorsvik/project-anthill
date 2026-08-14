@@ -55,3 +55,8 @@ data/
 .env
 debug.ipynb
 terraform_state_backup/
+
+# Airflow
+airflow.cfg
+airflow.db
+airflow_env/*
