@@ -10,7 +10,7 @@ sys.path.append(str(Path(__file__).parent))
 from airflow import DAG
 from airflow.providers.standard.operators.bash import BashOperator
 
-from common import DEFAULT_ARGS, START_DATE, script_command
+from common import DEFAULT_ARGS, START_DATE, load_stock_tickers, script_command
 
 with DAG(
     dag_id="polygon_intraday_prices",
@@ -23,9 +23,14 @@ with DAG(
     max_active_runs=1,
     tags=["polygon", "ingestion", "intraday"],
 ) as dag:
-    BashOperator(
+    # One mapped task instance per ticker, so tickers fetch in parallel (subject to executor parallelism).
+    BashOperator.partial(
         task_id="fetch_intraday_prices",
-        bash_command=script_command(
-            "src/pipelines/data_processing/write_polygon_intraday_to_parquet.py"
-        ),
+    ).expand(
+        bash_command=[
+            script_command(
+                f"src/pipelines/data_processing/write_polygon_intraday_to_parquet.py --ticker {ticker}"
+            )
+            for ticker in load_stock_tickers()
+        ]
     )

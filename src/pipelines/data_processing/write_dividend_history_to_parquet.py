@@ -1,5 +1,6 @@
 if __name__ == "__main__":
     # Import necessary libraries
+    import json
     import os
 
     import pandas as pd
@@ -13,38 +14,15 @@ if __name__ == "__main__":
     load_dotenv()
     api_key = os.getenv("POLYGON_API_KEY")
 
-    # All tickers to fetch data for
-    tickers = [
-        "AAPL",
-        "MSFT",
-        "GOOGL",
-        "IBM",
-        "AMZN",
-        "NVDA",
-        "XOM",
-        "CVX",
-        "WMT",
-        "MMM",
-        "ARE",
-        "ALLE",
-        "JPM",
-        "V",
-        "MA",
-        "PEP",
-        "CSCO",
-        "BA",
-        "ADBE",
-        "CAT",
-        "BLK",
-        "INTC",
-        "NKE",
-        "MDLZ",
-    ]
-
     client = PolygonAPI(api_key=api_key)
 
     oslib = OSLib()
     project_root_path = oslib.get_root_path()
+
+    # All tickers to fetch data for
+    stock_tick_path = f"{project_root_path}/data/polygon/portfolio/stock_tickers.json"
+    with open(stock_tick_path) as s:
+        tickers = json.load(s)
 
     for i, ticker in enumerate(tickers):
         sink_path = f"{project_root_path}/data/polygon/dividends/{ticker.lower()}/{ticker.lower()}_dividend_history.parquet"

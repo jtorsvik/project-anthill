@@ -51,8 +51,7 @@ if __name__ == "__main__":
     client = polygon_api.PolygonAPI(api_key=api_key)
 
     to_date = client.last_working_day()
-    # to_date = "2025-12-31"
-    
+    # to_date = "2022-12-31"
     from_date = f"{to_date[:4]}-01-01"
     
 

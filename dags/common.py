@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from datetime import timedelta
 
 import pendulum
@@ -26,3 +27,11 @@ START_DATE = pendulum.datetime(2025, 1, 1, tz="UTC")
 def script_command(relative_script_path: str) -> str:
     """Build the bash command that runs a pipeline script from the project root."""
     return f"cd {PROJECT_ROOT} && {PYTHON_BIN} {relative_script_path}"
+
+
+def load_stock_tickers() -> list[str]:
+    """Load the portfolio's stock ticker list, read at DAG-parse time to build one mapped task per ticker."""
+    tickers_path = f"{PROJECT_ROOT}/data/polygon/portfolio/stock_tickers.json"
+    with open(tickers_path) as f:
+        return json.load(f)
+

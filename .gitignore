@@ -60,3 +60,4 @@ terraform_state_backup/
 airflow.cfg
 airflow.db
 airflow_env/*
+/airflow/
